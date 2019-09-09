@@ -12,12 +12,7 @@ import java.util.*;
 public class jsonUtils {
     static String str1 = "{\"city\":{\"10011\":{\"rec\":1,\"sed\":1,\"sedPrice\":224}}}";
     static String str2 = "{\"city\":{\"10011\":{\"rec\":1,\"sed\":1,\"sedPrice\":224}}}";
-    public static void main(String[] args) {
-        System.out.println("hello");
 
-
-        mergeCityJson(str1,str2);
-    }
     public static String addJSON(String json1,String json2){
         JSONObject j1 = JSONObject.parseObject(json1);
         JSONObject j2 = JSONObject.parseObject(json2);

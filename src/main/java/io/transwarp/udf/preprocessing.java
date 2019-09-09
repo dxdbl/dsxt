@@ -104,7 +104,6 @@ public class preprocessing extends UDF {
                 // 返回最终结果
                 return result_json_str;
             }
-
         }
         return dt + "##0#0######true#1#1#sp";
     }

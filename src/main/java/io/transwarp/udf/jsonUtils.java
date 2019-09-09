@@ -259,8 +259,4 @@ public class jsonUtils {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println("hello");
-        System.out.println(getDsCode("TAOBAO"));
-    }
 }

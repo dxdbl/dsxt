@@ -36,14 +36,6 @@ public class hbaseUtils {
         }
     }
 
-
-    public static void main(String[] args) throws IOException {
-        System.out.println(" distcode by one column");
-        System.out.println(getOneRecordByCol("distcode","1","f","q1"));
-    }
-
-
-
     // 登陆 hbase
     public static void init(){
         try {
@@ -71,7 +63,6 @@ public class hbaseUtils {
             System.out.println("create table " + tableName + " ok.");
         }
     }
-
     /**
      * ? * 删除表
      * ?
@@ -88,7 +79,6 @@ public class hbaseUtils {
             e.printStackTrace();
         }
     }
-
     /**
      * ? * 插入一行记录
      * ?
@@ -188,7 +178,6 @@ public class hbaseUtils {
         for (int j = 0; j < column.length; j++) {
             put.add(Bytes.toBytes("f"), Bytes.toBytes(column[j]), Bytes.toBytes(value[j]));
         }
-
         table.put(put);
         System.out.println("add data Success!");
     }

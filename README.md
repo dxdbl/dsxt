@@ -3,27 +3,28 @@
 ### 仅此而已
 ##### 下面是slipstream中的创建stream语句(不是最终版本..)
 
--- 创建 hbase 表存储非重复单号数据并且用于去重
-CREATE  TABLE  order(
-     mailNo STRING  --rowkey 单号
-    ,flag string  -- 默认 '1' 判断是否重复时候用
-    ,jsonstr string
-)
-STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler';
+-- 创建 hbase 表存储非重复单号数据并且用于去重  
+CREATE  TABLE  order(  
+     mailNo STRING  --rowkey 单号  
+    ,flag string  -- 默认 '1' 判断是否重复时候用  
+    ,jsonstr string  
+)  
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler';  
 
--- 创建 topic 用于接收处理后的消息(一条order对应kafka中的一条消息) topic 为 dsxt_online
--- 创建 input stream 对接 kafka 的 topic dsxt_online
-DROP STREAM order_input;
-CREATE STREAM order_input (
-    jsonstr string
-    ) 
-TBLPROPERTIES("topic"="dsxt_online","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181","kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");
+-- 创建 topic 用于接收处理后的消息(一条order对应kafka中的一条消息) topic 为 dsxt_online  
+-- 创建 input stream 对接 kafka 的 topic dsxt_online  
+DROP STREAM order_input;  
+CREATE STREAM order_input (  
+    jsonstr string  
+    )   
+TBLPROPERTIES("topic"="dsxt_online","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181"
+,"kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
 
--- 创建 stream 保存 UDF 处理之后生成的 json 串 (对应kafka的一个 topic )
-DROP STREAM order_middle;
-CREATE STREAM order_middle (
-    order string
-    ) 
+-- 创建 stream 保存 UDF 处理之后生成的 json 串 (对应kafka的一个 topic )  
+DROP STREAM order_middle;  
+CREATE STREAM order_middle (  
+    order string  
+    )   
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\001' LINES TERMINATED BY  '\n'
 TBLPROPERTIES("topic"="middle","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181","kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");
 

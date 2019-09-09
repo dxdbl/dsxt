@@ -1,6 +1,6 @@
 ## DSXT
 ### 单纯保存代码
-### 仅此而已
+
 ##### 下面是slipstream中的创建stream语句(不是最终版本..)
 
 -- 创建 hbase 表存储非重复单号数据并且用于去重  
@@ -129,6 +129,6 @@ create streamjob topic_data_aggregate as
     ,'sp'   
      from  order_aggregate_window GROUP BY id");  
 
--- 读取 aggregate 数据, 将聚合后json加到redis中(1. 取出对应key的json串  
+-- 1. 读取 aggregate 数据, 将聚合后json加到redis中(1. 取出对应key的json串  
 -- 2. 将从redis取出的json串和聚合后的串按照相同的key相加 3.将相加结果update回redis)  
 

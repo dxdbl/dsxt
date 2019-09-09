@@ -1,7 +1,7 @@
 ## DSXT
 ### 单纯保存代码
 ### 仅此而已
-##### 下面是slipstream中的创建stream语句(不是最终版本...)
+##### 下面是slipstream中的创建stream语句(不是最终版本..)
 
 -- 创建 hbase 表存储非重复单号数据并且用于去重
 CREATE  TABLE  order(

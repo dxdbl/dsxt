@@ -108,18 +108,4 @@ public class preprocessing extends UDF {
         }
         return dt + "##0#0######true#1#1#sp";
     }
-
-    public static void main(String[] args) {
-        //System.out.println(evaluate(""));
-
-        JSONObject jo = JSONObject.parseObject("{\"ecCompanyId\":\"JBD\",\"txLogisticID\":\"JBD\",\"logisticProviderID\":\"JBD\",\"mailNo\":\"JD0002136068926\",\"mailType\":\"1\",\"recAreaCode\":\"1\",\"senProvCode\":\"220000\",\"senCityCode\":\"220100\",\"senCountyCode\":\"220182\",\"recCityCode\":\"00\",\"recDatetime\":\"2019-08-31 14:22:11\",\"sysDate\":\"2019-08-31 14:22:33\"}");
-
-        if (jo.getString("ecCompanyId") == null)
-        {
-            System.out.println("null");
-        }
-        else{
-            System.out.println(jo.getString("ecCompanyId"));
-        }
-    }
 }

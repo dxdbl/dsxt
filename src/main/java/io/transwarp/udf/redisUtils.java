@@ -10,7 +10,9 @@ public class redisUtils extends UDF {
     public static JSONObject json=JSONObject.parseObject("{}");
 
     public String evaluate(String id, String ds, String countryallcnt, String countryallprice, String city, String dist, String keyCity, String pc, String prov, String sString, String secondspeed, String flag, String sp) {
-        String hget = jedis.hget("JSON_STORE", "cachedD"+id);
+
+        String hget = jedis.hget("JSON_STORE", "cachedD" + id);
+
         if(hget==null||hget.equals("null")){
             if(ds.equals("")){
                 json.put("countryAllCnt",countryallcnt);
@@ -71,15 +73,15 @@ public class redisUtils extends UDF {
                 json.put("s",sString);
                 json.put("secondSpeed",secondspeed);
                 json.put("sp",sp);
-                json.put("duplicateCnt",json.getInteger("duplicateCnt")+Integer.parseInt(flag));//
+                json.put("duplicateCnt",json.getInteger("duplicateCnt") + Integer.parseInt(flag));//
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
             }else if(!json.containsKey("ds")&&ds.equals("")){
-                json.put("countryAllCnt",json.getInteger("countryAllCnt")+Integer.parseInt(countryallcnt));
+                json.put("countryAllCnt",json.getInteger("countryAllCnt") + Integer.parseInt(countryallcnt));
                 json.put("countryAllPrice",json.getInteger("countryAllPrice")+Integer.parseInt(countryallprice));
                 json.put("s",sString);
                 json.put("secondSpeed",secondspeed);
                 json.put("sp",sp);
-                json.put("duplicateCnt",json.getInteger("duplicateCnt")+Integer.parseInt(flag));//
+                json.put("duplicateCnt",json.getInteger("duplicateCnt") + Integer.parseInt(flag));//
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
             }else if(json.containsKey("ds")&&ds.equals("")){
                 json.put("countryAllCnt",json.getInteger("countryAllCnt")+Integer.parseInt(countryallcnt));

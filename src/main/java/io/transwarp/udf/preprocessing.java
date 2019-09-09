@@ -14,7 +14,7 @@ public class preprocessing extends UDF {
     // hbase 表结构 rowley 存储单号，q1存储 flag ，q2存储 消息json串
     public static String[] columns = {"q1","q2"};
 
-    public String evaluate(String jsonStr) {
+    public static String evaluate(String jsonStr) {
         JSONObject jo = JSONObject.parseObject(jsonStr);
 
         // 获取json串中的电商平台,推送时间,单号
@@ -107,5 +107,11 @@ public class preprocessing extends UDF {
 
         }
         return dt + "##0#0######true#1#1#sp";
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(evaluate("{\"logisticProviderID\":\"STO\",\"ecCompanyId\":\"TAOBAO\",\"txLogisticID\":\"LP00142298804033\",\"mailNo\":\"773001389839588\",\"orderType\":0,\"serviceType\":0,\"senProvCode\":\"江苏省\",\"senCityCode\":\"扬州市广陵区\",\"recProvCode\":\"江西省\",\"recCityCode\":\"南昌市东湖区\",\"items\":[{}],\"sysDate\":\"2019-08-31 14:22:33\"}"));
+
     }
 }

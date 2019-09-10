@@ -8,9 +8,6 @@ import java.io.IOException;
 
 
 public class preprocessing extends UDF {
-
-    public static Logger log = Logger.getLogger(dsxt.class);
-
     // hbase 表结构 rowley 存储单号，q1存储 flag ，q2存储 消息json串
     public static String[] columns = {"q1","q2"};
 

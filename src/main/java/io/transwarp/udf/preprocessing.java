@@ -8,24 +8,31 @@ import java.io.IOException;
 
 
 public class preprocessing extends UDF {
+    public static Logger log = Logger.getLogger(preprocessing.class);
     // hbase 表结构 rowley 存储单号，q1存储 flag ，q2存储 消息json串
     public static String[] columns = {"q1","q2"};
 
     public String evaluate(String jsonStr) {
         JSONObject jo = JSONObject.parseObject(jsonStr);
+        log.info("##################### json对象化成功 ############");
 
         // 获取json串中的电商平台,推送时间,单号
         String mailNo = jo.getString("mailNo");
+        log.info("##################### 获取 mailNo 成功 ############");
         String ds_name = jo.getString("ecCompanyId");
+        log.info("##################### 获取 ecCompanyId 成功 ############");
         String time = jo.getString("sysDate");
+        log.info("##################### 获取 sysDate 成功 ############");
         String pc_name= jo.getString("logisticProviderID");
+        log.info("##################### 获取 logisticProviderID 成功 ############");
 
         // 生成时间key
         String dt = jsonUtils.DateTime(time);
+        log.info("##################### dt 成功 ############" + dt);
 
         String flag = null;
         try {
-            flag = hbaseUtils.getOneRecordByCol("order", mailNo, "f", "q1");
+            flag = hbaseUtils.getOneRecordByCol("dsxt.order_online", mailNo, "f", "q1");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,7 +88,7 @@ public class preprocessing extends UDF {
                 String rec_city_code = jsonUtils.getCityCode(rec_pro,rec_city,rec_dist);
                 String rec_dist_code = jsonUtils.getDistCode(rec_pro,rec_city,rec_dist);
 
-                // 京邦达 code
+                // 电商企业 code
                 String ds_code = jsonUtils.getDsCode(ds_name);
 
                 // 获取企业code

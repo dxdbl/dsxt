@@ -8,8 +8,8 @@ import redis.clients.jedis.Jedis;
  * @time: 2019/8/30 17:37
  */
 public class redisUtils {
-    public static Jedis jedis;
 
+    public static Jedis jedis;
 
     public static void main(String[] args) {
         try {

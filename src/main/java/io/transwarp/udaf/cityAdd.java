@@ -11,8 +11,6 @@ import org.apache.log4j.Logger;
  */
 public class cityAdd extends UDAF {
 
-    public static Logger log = Logger.getLogger(pcAdd.class);
-
     public static class jsonStr{
         private String str;
     }
@@ -25,7 +23,6 @@ public class cityAdd extends UDAF {
             super();
             json = new jsonStr();
             init();
-            log.info("################# init #################");
         }
 
         /**
@@ -35,20 +32,17 @@ public class cityAdd extends UDAF {
          */
         public void init() {
             json.str = "";
-            log.info("################ init json str #####" + json.str);
         }
         /*
          * iterate接收传入的参数，并进行内部的轮转。其返回类型为boolean * * @param o * @return
          */
         public boolean iterate(String o) {
-            log.info("################ iterate开始 #####" + json.str);
             if (o != null && !o.equals("")){
                 if (json.str.equals("")){
                     json.str = o;
                 }else{
                     json.str = jsonUtils.cityAdd(json.str,o);
                 }
-                log.info("################ iterate内部 #####" + json.str);
             }
             return true;
         }
@@ -60,7 +54,6 @@ public class cityAdd extends UDAF {
 
         public String terminatePartial() {
             // combiner
-            log.info("################ terminatePartial #####" + json.str);
             return (json.str.equals("")? "" :json.str);
 
         }
@@ -69,7 +62,6 @@ public class cityAdd extends UDAF {
          * merge接收terminatePartial的返回结果，进行数据merge操作，其返回类型为boolean * * @param o * @return
          */
         public boolean merge(String json1) {
-            log.info("################ merge #####" + json.str);
             if (!json1.equals("") && json1 != null) {
                 if (json.str.equals("")){
                     json.str = json1;
@@ -84,7 +76,6 @@ public class cityAdd extends UDAF {
          * terminate返回最终的聚集函数结果 * * @return
          */
         public String terminate() {
-            log.info("################ terminate #####" + json.str);
             return (json.str.equals("") ? "" : json.str);
         }
     }

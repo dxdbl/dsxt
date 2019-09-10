@@ -23,7 +23,7 @@ public class preprocessing extends UDF {
         log.info("##################### 获取 ecCompanyId 成功 ############");
         String time = jo.getString("sysDate");
         log.info("##################### 获取 sysDate 成功 ############");
-        String pc_name= jo.getString("logisticProviderID");
+        String pc_name= jo.getString("logisticProviderID"); // pc 快递企业
         log.info("##################### 获取 logisticProviderID 成功 ############");
 
         // 生成时间key
@@ -39,7 +39,7 @@ public class preprocessing extends UDF {
         if (!flag.equals("1")) {
             String[] values = {"1", jsonStr};
             try {
-                hbaseUtils.addData("order", mailNo, columns, values);
+                hbaseUtils.addData("dsxt.order_online", mailNo, columns, values);
             } catch (IOException e) {
                 e.printStackTrace();
             }

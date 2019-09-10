@@ -22,7 +22,7 @@ public class jsonUtils {
     static {
         try {
             dist_str = hbaseUtils.getOneRecordByCol("distcode","1","f","q1");
-            pc_str = hbaseUtils.getOneRecordByCol("pccode","1","f","q1");
+            pc_str = hbaseUtils.getOneRecordByCol("dsxt.pc_code","1","f","q1");
             ds_str = hbaseUtils.getOneRecordByCol("dscode","1","f","q1");
         } catch (IOException e) {
             e.printStackTrace();

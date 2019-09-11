@@ -5,8 +5,9 @@ import org.apache.hadoop.hive.ql.exec.UDF;
 import redis.clients.jedis.Jedis;
 import io.transwarp.udaf.jsonUtils;
 
-public class redisUtils extends UDF {
-    public static Jedis jedis;
+public class updateRedis extends UDF {
+
+    public static Jedis jedis = new Jedis("10.11.220.15", 6379, 10000);
     public static JSONObject json=JSONObject.parseObject("{}");
 
     public String evaluate(String id, String ds, String countryallcnt, String countryallprice, String city, String dist, String keyCity, String pc, String prov, String sString, String secondspeed, String flag, String sp) {
@@ -25,20 +26,21 @@ public class redisUtils extends UDF {
             }else{
                 json.put("ds",JSONObject.parseObject(ds).get("ds"));
                 json.put("city",JSONObject.parseObject(city).get("city"));
-            json.put("dist",JSONObject.parseObject(dist).get("dist"));
-            json.put("keyCity",JSONObject.parseObject(keyCity).get("keyCity"));
-            json.put("pc",JSONObject.parseObject(pc).get("pc"));
-            json.put("prov",JSONObject.parseObject(prov).get("prov"));
-            json.put("countryAllCnt",countryallcnt);
-            json.put("countryAllPrice",countryallprice);
-            json.put("s",sString);
-            json.put("secondSpeed",secondspeed);
-            json.put("sp",sp);
-            json.put("duplicateCnt",flag);//
-            jedis.hset("JSON_STORE","cachedD"+id,json.toString());
+                json.put("dist",JSONObject.parseObject(dist).get("dist"));
+                json.put("keyCity",JSONObject.parseObject(keyCity).get("keyCity"));
+                json.put("pc",JSONObject.parseObject(pc).get("pc"));
+                json.put("prov",JSONObject.parseObject(prov).get("prov"));
+                json.put("countryAllCnt",countryallcnt);
+                json.put("countryAllPrice",countryallprice);
+                json.put("s",sString);
+                json.put("secondSpeed",secondspeed);
+                json.put("sp",sp);
+                json.put("duplicateCnt",flag);//
+                jedis.hset("JSON_STORE","cachedD"+id,json.toString());
             }
-        }else{
-             json=JSONObject.parseObject(hget);
+        }
+        else{
+            json=JSONObject.parseObject(hget);
             if (json.containsKey("ds")&&!ds.equals("")) {
                 //将redis中的值和传过来的字符串拼接
                 String ds2 = jsonUtils.dsAdd("{\"ds\":" +json.getJSONObject("ds")+"}", ds);
@@ -93,6 +95,7 @@ public class redisUtils extends UDF {
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
             }
         }
-        return json.toString();
+        jedis.hset("JSON_STORE","cachedD" + id,json.toString());
+        return "update cachedD" + id + " sucess!";
     }
 }

@@ -17,10 +17,7 @@ public class redisUtils {
                 jedis = new Jedis("10.11.220.15", 6379, 10000);
             }
 
-            jedis.hset("JSON_STORE","cachedD2019083023","{\"ds\":{\"tb\":{\"all\":1,\"allPrice\":224,\"prov\":{\"370000\":{\"rec\":0,\"sed\":1,\"sedPrice\":224,\"city\":{\"370100\":{\"rec\":0,\"sed\":1,\"sedPrice\":224,\"dist\":{\"370101\":{\"rec\":0,\"sed\":1,\"sedPrice\":224}}}}},\"330000\":{\"rec\":1,\"sed\":0,\"sedPrice\":0,\"city\":{\"330100\":{\"rec\":1,\"sed\":0,\"sedPrice\":0,\"dist\":{\"330101\":{\"rec\":1,\"sed\":0,\"sedPrice\":0}}}}}}}}}");
-            System.out.println("hset success!!!");
-
-            System.out.println(jedis.hget("JSON_STORE","cachedD2019090123"));
+            System.out.println(jedis.hget("JSON_STORE","cachedD2019083117"));
 
         } catch (Exception e) {
             e.printStackTrace();

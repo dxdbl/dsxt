@@ -23,6 +23,9 @@ public class updateRedis extends UDF {
                 json.put("duplicateCnt",flag);
                 json.put("sp",sp);
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
+
+                return "update cachedD" + id +" sucess!";
+
             }else{
                 json.put("ds",JSONObject.parseObject(ds).get("ds"));
                 json.put("city",JSONObject.parseObject(city).get("city"));
@@ -37,6 +40,9 @@ public class updateRedis extends UDF {
                 json.put("sp",sp);
                 json.put("duplicateCnt",flag);//
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
+
+                return "update cachedD" + id +" sucess!";
+
             }
         }
         else{
@@ -56,13 +62,16 @@ public class updateRedis extends UDF {
                 json.put("keyCity",JSONObject.parseObject(keyCity2).getJSONObject("keyCity"));
                 json.put("pc",JSONObject.parseObject(pc2).getJSONObject("pc"));
                 json.put("prov",JSONObject.parseObject(prov2).getJSONObject("prov"));
-                json.put("countryAllCnt",json.getInteger("countryAllCnt")+Integer.parseInt(countryallcnt));
-                json.put("countryAllPrice",json.getInteger("countryAllPrice")+Integer.parseInt(countryallprice));
+                json.put("countryAllCnt",json.getFloat("countryAllCnt") + Float.parseFloat(countryallcnt));
+                json.put("countryAllPrice",json.getFloat("countryAllPrice") + Float.parseFloat(countryallprice));
                 json.put("s",sString);
                 json.put("secondSpeed",secondspeed);
                 json.put("sp",sp);
-                json.put("duplicateCnt",json.getInteger("duplicateCnt")+Integer.parseInt(flag));//
+                json.put("duplicateCnt",json.getFloat("duplicateCnt") + Float.parseFloat(flag));//
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
+
+                return "update cachedD" + id +" sucess!";
+
             }else if(!json.containsKey("ds")&&!ds.equals("")){
                 json.put("ds",JSONObject.parseObject(ds).get("ds"));
                 json.put("city",JSONObject.parseObject(city).get("city"));
@@ -70,32 +79,40 @@ public class updateRedis extends UDF {
                 json.put("keyCity",JSONObject.parseObject(keyCity).get("keyCity"));
                 json.put("pc",JSONObject.parseObject(pc).get("pc"));
                 json.put("prov",JSONObject.parseObject(prov).get("prov"));
-                json.put("countryAllCnt",json.getInteger("countryAllCnt")+Integer.parseInt(countryallcnt));
-                json.put("countryAllPrice",json.getInteger("countryAllPrice")+Integer.parseInt(countryallprice));
+                json.put("countryAllCnt",json.getFloat("countryAllCnt") + Float.parseFloat(countryallcnt));
+                json.put("countryAllPrice",json.getFloat("countryAllPrice") + Float.parseFloat(countryallprice));
                 json.put("s",sString);
                 json.put("secondSpeed",secondspeed);
                 json.put("sp",sp);
-                json.put("duplicateCnt",json.getInteger("duplicateCnt") + Integer.parseInt(flag));//
+                json.put("duplicateCnt",json.getFloat("duplicateCnt") + Float.parseFloat(flag));//
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
+
+                return "update cachedD" + id +" sucess!";
+
             }else if(!json.containsKey("ds")&&ds.equals("")){
-                json.put("countryAllCnt",json.getInteger("countryAllCnt") + Integer.parseInt(countryallcnt));
-                json.put("countryAllPrice",json.getInteger("countryAllPrice")+Integer.parseInt(countryallprice));
+                json.put("countryAllCnt",json.getFloat("countryAllCnt") + Float.parseFloat(countryallcnt));
+                json.put("countryAllPrice",json.getFloat("countryAllPrice") + Float.parseFloat(countryallprice));
                 json.put("s",sString);
                 json.put("secondSpeed",secondspeed);
                 json.put("sp",sp);
-                json.put("duplicateCnt",json.getInteger("duplicateCnt") + Integer.parseInt(flag));//
+                json.put("duplicateCnt",json.getFloat("duplicateCnt") + Float.parseFloat(flag));//
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
+
+                return "update cachedD" + id +" sucess!";
+
             }else if(json.containsKey("ds")&&ds.equals("")){
-                json.put("countryAllCnt",json.getInteger("countryAllCnt")+Integer.parseInt(countryallcnt));
-                json.put("countryAllPrice",json.getInteger("countryAllPrice")+Integer.parseInt(countryallprice));
+                json.put("countryAllCnt",json.getFloat("countryAllCnt") + Float.parseFloat(countryallcnt));
+                json.put("countryAllPrice",json.getFloat("countryAllPrice") + Float.parseFloat(countryallprice));
                 json.put("s",sString);
                 json.put("secondSpeed",secondspeed);
                 json.put("sp",sp);
-                json.put("duplicateCnt",json.getInteger("duplicateCnt")+Integer.parseInt(flag));//
+                json.put("duplicateCnt",json.getFloat("duplicateCnt") + Float.parseFloat(flag));//
                 jedis.hset("JSON_STORE","cachedD"+id,json.toString());
+
+                return "update cachedD" + id +" sucess!";
+
             }
         }
-        jedis.hset("JSON_STORE","cachedD" + id,json.toString());
-        return "update cachedD" + id + " sucess!";
+        return "update error!";
     }
 }

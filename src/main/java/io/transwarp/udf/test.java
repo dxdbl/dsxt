@@ -1,6 +1,8 @@
 package io.transwarp.udf;
 
 import com.alibaba.fastjson.JSONObject;
+import jodd.typeconverter.Convert;
+import org.apache.commons.math3.util.Decimal64;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -170,10 +172,8 @@ public class test {
         return ss;
     }
     public static void main(String[] args) {
-        String ds = "";
 
-        System.out.println(ds("10000","11000","11000","11001","11000","11000","11001"));
-
-        System.out.println(dsAdd("",""));
+        String a = "99999999999";
+        System.out.println(Float.parseFloat(a));
     }
 }

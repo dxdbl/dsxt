@@ -112,7 +112,4 @@ jobproperties("morphling.job.checkpoint.interval"="3600000",  --checkpoint间隔
     "morphling.task.max.failures"="3", --任务失败重试次数  
     "stream.number.receivers"="1");    -- receivers 个数设置  
 
-
-
-
 ```

@@ -44,26 +44,8 @@ CREATE STREAM order_aggregate AS select
     ,agg[10] as secondSpeed -- 消费速度 默认 1  
     ,agg[11] as flag -- 是否重复标志  
     ,agg[12] as sp  -- 预留 未来业务需要  
-    from (select split(order,'#') as agg from  order_middle);  
-
--- 创建 窗口 用于数据聚合  
-DROP STREAM order_aggregate_window;  
-CREATE STREAM order_aggregate_window as select  
-     id  
-    ,ds  
-    ,countryAllCnt   -- 非重复 + 1  
-    ,countryAllPrice  -- 非重复 224  
-    ,city  
-    ,dist  
-    ,keycity  
-    ,pc  
-    ,prov  
-    ,s  -- 默认 'true'  
-    ,secondSpeed   -- 消费速度 默认 1  
-    ,flag  -- 是否重复标志  
-    ,sp  
-    from order_aggregate streamwindow w1 as (INTERVAL '5' SECOND);  
-
+    from (select split(order,'#') as agg from  order_middle)  
+     STREAMWINDOW w1 AS(length '10' second slide '10' second);  
 
 -- 创建流 input stream 用于存储聚合后的结果(单分区 topic)  
 DROP STREAM order_after_aggregate;  
@@ -90,23 +72,47 @@ drop streamjob topic_data_aggregate;
 create streamjob topic_data_aggregate as  
 ("insert into order_after_aggregate select  
      id  
-    ,dsadd(ds)  
-    ,sum(countryAllCnt)  
-    ,sum(countryAllPrice)  
-    ,cityAdd(city)  
-    ,distAdd(dist)  
-    ,keycityadd(keycity)  
-    ,pcadd(pc)  
-    ,provadd(prov)  
-    ,'true'  
-    ,sum(secondSpeed)/5   -- 消费速度 除数是窗口长度  
-    ,sum(flag)  -- 重复数量值  
-    ,'sp'  
-     from  order_aggregate_window GROUP BY id");  
+    ,dsadd(ds)  as ds  
+    ,sum(countryAllCnt)  as countryAllCnt  
+    ,sum(countryAllPrice)  as countryAllPrice  
+    ,cityAdd(city)  as city  
+    ,distAdd(dist)  as dist  
+    ,keycityadd(keycity)  as keycity  
+    ,pcadd(pc)  as pc  
+    ,provadd(prov)  as prov  
+    ,'true'  as s
+    ,sum(secondSpeed)/10  as secondSpeed -- 消费速度(除数是窗口长度)  
+    ,sum(flag) as flag  -- 重复单号数量  
+    ,'sp'  as sp  
+     from  order_aggregate_window GROUP BY id")  
+     jobproperties("morphling.job.checkpoint.interval"="3600000",  --checkpoint间隔,单位(毫秒)
+                    "morphling.job.enable.checkpoint"="true",  --定义该任务是否启用HA  
+                    "morphling.task.max.failures"="3", --任务失败重试次数  
+                    "stream.number.receivers"="2");  -- receivers 个数设置  
 
 -- 读取 aggregate 数据, 将聚合后json加到redis中  
 --- 1. 取出对应key的json串  
 --- 2. 将从redis取出的json串和聚合后的串按照相同的key相加  
 --- 3.将相加结果update回redis)  
+
+-- 创建存储处理结果得hbase表
+create table dsxt.out(id string,res string)stored as hyperdrive;  
+
+-- 创建 streamjob 
+drop streamjob update_redis;  
+create streamjob update_redis as  
+("insert into dsxt.out select 
+     uuid()
+    ,updateRedis(id,ds,countryAllCnt,countryAllPrice
+    ,city,dist,keycity,pc,prov,
+    s,secondSpeed,flag,sp)  
+from  order_after_aggregate")  
+jobproperties("morphling.job.checkpoint.interval"="3600000",  --checkpoint间隔,单位(毫秒)  
+    "morphling.job.enable.checkpoint"="true",  --定义该任务是否启用HA  
+    "morphling.task.max.failures"="3", --任务失败重试次数  
+    "stream.number.receivers"="1");    -- receivers 个数设置  
+
+
+
 
 ```

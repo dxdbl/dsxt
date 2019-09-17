@@ -1,7 +1,7 @@
 ## DSXT
 ### 单纯保存代码
 
-##### 下面是slipstream中的创建stream语句(不是最终版本..)
+##### 下面是slipstream中的创建stream语句(不一定是最终版本..)
 
 ```sql  
 

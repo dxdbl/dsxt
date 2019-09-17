@@ -12,32 +12,18 @@ public class redisUtils {
     public static Jedis jedis;
 
     public static void main(String[] args) {
+        System.out.println(hget(args[0]));
+    }
+    public static String hget(String field){
         try {
             if (jedis == null) {
                 jedis = new Jedis("10.11.220.15", 6379, 10000);
             }
-
-            System.out.println(jedis.hget("JSON_STORE","cachedD2019083117"));
+            return jedis.hget("JSON_STORE","cachedD2019083117");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (jedis != null) {
-            jedis.close();
-
-        }
-    }
-    public static String readRedis(String key,String field){
-        if (jedis == null){
-            jedis = new Jedis("10.11.220.15", 6379, 10000);
-        }
-        String json_str = jedis.hget(key,field);
-        return json_str;
-    }
-    public static void putRedis(String key,String field,String value){
-        if (jedis == null){
-            jedis = new Jedis("10.11.220.15", 6379, 10000);
-        }
-        jedis.hset(key,field,value);
+        return "error";
     }
 }

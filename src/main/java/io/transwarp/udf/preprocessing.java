@@ -55,7 +55,7 @@ public class preprocessing extends UDF {
         log.info("##################### 获取 logisticProviderID 成功 ############");
 
         // 生成时间key
-        dt = jsonUtils.DateTime(time);
+        dt = jsonUtil.DateTime(time);
         log.info("##################### dt 成功 ############" + dt);
 
         //flag = null;
@@ -90,16 +90,16 @@ public class preprocessing extends UDF {
                 ds_code = "30000";
 
                 // 获取企业code
-                pc_code= jsonUtils.getPcCode(pc_name);
+                pc_code= jsonUtil.getPcCode(pc_name);
                 log.info("##################### getPcCode 成功 ############" + pc_code);
 
                 // 生成最终中间结果字符串
-                ds = jsonUtils.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
-                city = jsonUtils.byCity(send_city_code,rec_city_code);
-                dist = jsonUtils.Dist(send_dist_code,rec_dist_code);
-                key_city = jsonUtils.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
-                pc = jsonUtils.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
-                prov = jsonUtils.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
+                ds = jsonUtil.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
+                city = jsonUtil.byCity(send_city_code,rec_city_code);
+                dist = jsonUtil.Dist(send_dist_code,rec_dist_code);
+                key_city = jsonUtil.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
+                pc = jsonUtil.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
+                prov = jsonUtil.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
 
                 // 拼接最终结果json字符串
                 result_json_str = dt + "#" + ds + "#" + "1" + "#" + "224" + "#" + city + "#" + dist + "#" + key_city + "#" + pc + "#" + prov + "#" + "true" + "#" + "1" + "#" + "0" + "#" + "sp";
@@ -130,27 +130,27 @@ public class preprocessing extends UDF {
                     rec_dist = "distisempty";
                 }
 
-                send_pro_code = jsonUtils.getProvinceCode(send_pro);
-                send_city_code = jsonUtils.getCityCode(send_pro,send_city,send_dist);
-                send_dist_code = jsonUtils.getDistCode(send_pro,send_city,send_dist);
+                send_pro_code = jsonUtil.getProvinceCode(send_pro);
+                send_city_code = jsonUtil.getCityCode(send_pro,send_city,send_dist);
+                send_dist_code = jsonUtil.getDistCode(send_pro,send_city,send_dist);
 
-                rec_pro_code = jsonUtils.getProvinceCode(rec_pro);
-                rec_city_code = jsonUtils.getCityCode(rec_pro,rec_city,rec_dist);
-                rec_dist_code = jsonUtils.getDistCode(rec_pro,rec_city,rec_dist);
+                rec_pro_code = jsonUtil.getProvinceCode(rec_pro);
+                rec_city_code = jsonUtil.getCityCode(rec_pro,rec_city,rec_dist);
+                rec_dist_code = jsonUtil.getDistCode(rec_pro,rec_city,rec_dist);
 
                 // 电商企业 code
-                ds_code = jsonUtils.getDsCode(ds_name);
+                ds_code = jsonUtil.getDsCode(ds_name);
 
                 // 获取企业code
-                pc_code= jsonUtils.getPcCode(pc_name);
+                pc_code= jsonUtil.getPcCode(pc_name);
 
                 // 生成最终中间结果字符串
-                ds = jsonUtils.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
-                city = jsonUtils.byCity(send_city_code,rec_city_code);
-                dist = jsonUtils.Dist(send_dist_code,rec_dist_code);
-                key_city = jsonUtils.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
-                pc = jsonUtils.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
-                prov = jsonUtils.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
+                ds = jsonUtil.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
+                city = jsonUtil.byCity(send_city_code,rec_city_code);
+                dist = jsonUtil.Dist(send_dist_code,rec_dist_code);
+                key_city = jsonUtil.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
+                pc = jsonUtil.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
+                prov = jsonUtil.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
 
                 // 拼接最终结果json字符串
                 result_json_str = dt + "#" + ds + "#" + "1" + "#" + "224" + "#" + city + "#" + dist + "#" + key_city + "#" + pc + "#" + prov + "#" + "true" + "#" + "1" + "#" + "0" + "#" + "sp";

@@ -11,16 +11,67 @@ import java.util.*;
  */
 public class jsonUtils {
 
+    private static JSONObject jo = null;
+    private static JSONObject jo00 = null;
+    private static JSONObject jo01 = null;
+    private static JSONObject jo1 = null;
+    private static JSONObject jo12 = null;
+    private static JSONObject jo2 = null;
+    private static JSONObject jo3 = null;
+    private static JSONObject o32 = null;
+    private static JSONObject jo4 = null;
+    private static JSONObject jo5 = null;
+    private static JSONObject jo52 = null;
+    private static JSONObject jo6 = null;
+    private static JSONObject o7 = null;
+    private static JSONObject o8 = null;
+    private static JSONObject o9 = null;
+    private static JSONObject o10 = null;
+    private static JSONObject rec = null;
+    private static JSONObject rec2 = null;
+    private static Set<String> set1 = null;
+    private static Set<String> set2 = null;
+    private static Set<String> set3 = null;
+    private static Set<String> set4 = null;
+    private static Set<String> set5 = null;
+    private static Set<String> set6 = null;
+    private static Set<String> set7 = null;
+    private static Set<String> set8 = null;
+    private static Set<String> set9 = null;
+    private static Set<String> set10 = null;
+    private static Set<String> set11 = null;
+    private static Set<String> set12 = null;
+    private static Set<String> set13 = null;
+    private static Set<String> set14 = null;
+    private static Set<String> set15 = null;
+    private static Set<String> set16 = null;
+    private static List<String> lt = new ArrayList<String>(){{this.add("toProv");add("toCity");add("fromCity");add("fromProv");}};;
+    private static List<String> cd = new ArrayList<String>(){{this.add("city");add("dist");}};
+    private static float sum_pro;
+    private static float sum;
+    private static float sum_rec;
+    private static float sum_sed;
+    private static float sum_sedPrice;
+    private static Map.Entry<String, Object> entry1;
+    private static Map.Entry<String, Object> entry2;
+    private static Map.Entry<String, Object> entry3;
+    private static Map.Entry<String, Object> entry4;
+    private static Map.Entry<String, Object> entry5;
+    private static Map.Entry<String, Object> entry6;
+
+
+
+
     public static String cityAdd(String jsonStr1, String jsonStr2){
-        JSONObject jo1 = JSONObject.parseObject(jsonStr1);
-        JSONObject jo2 = JSONObject.parseObject(jsonStr2);
+        jo1 = JSONObject.parseObject(jsonStr1);
+        jo2 = JSONObject.parseObject(jsonStr2);
 
-        JSONObject rec = jo1.getJSONObject("city");
-        JSONObject rec2 = jo2.getJSONObject("city");
-        Set<String> set1 = rec.keySet();//第一个串的city集合
-        Set<String> set2 = rec2.keySet();//第二个串的city集合
+        rec = jo1.getJSONObject("city");
+        rec2 = jo2.getJSONObject("city");
+        set1 = rec.keySet();//第一个串的city集合
+        set2 = rec2.keySet();//第二个串的city集合
 
-        Set<String> set3 = new HashSet<String>();
+        set3 = new HashSet<String>();
         for (String s : set2) {
             for (String s2 : set1) {
                 if (s.equals(s2)) {
@@ -29,7 +80,7 @@ public class jsonUtils {
                 }
             }
         }
-        Set<String> set4 = new HashSet<String>();
+        set4 = new HashSet<String>();
         set4.addAll(set2);
         set4.removeAll(set3);
 
@@ -41,7 +92,7 @@ public class jsonUtils {
         }
         if (set3.size() != 0) {
             for (String s : set3) {
-                JSONObject jo = rec.getJSONObject(s);
+                jo = rec.getJSONObject(s);
                 jo.put("rec", rec.getJSONObject(s).getInteger("rec") + rec2.getJSONObject(s).getInteger("rec"));
                 jo.put("sed", rec.getJSONObject(s).getInteger("sed") + rec2.getJSONObject(s).getInteger("sed"));
                 jo.put("sedPrice", rec.getJSONObject(s).getInteger("sedPrice") + rec2.getJSONObject(s).getInteger("sedPrice"));
@@ -51,15 +102,15 @@ public class jsonUtils {
     }
 
     public static String distAdd(String jsonStr1, String jsonStr2){
-        JSONObject jo1 = JSONObject.parseObject(jsonStr1);
-        JSONObject jo2 = JSONObject.parseObject(jsonStr2);
+        jo1 = JSONObject.parseObject(jsonStr1);
+        jo2 = JSONObject.parseObject(jsonStr2);
 
-        JSONObject rec = jo1.getJSONObject("dist");
-        JSONObject rec2 = jo2.getJSONObject("dist");
-        Set<String> set1 = rec.keySet();//第一个串的city集合
-        Set<String> set2 = rec2.keySet();//第二个串的city集合
+        rec = jo1.getJSONObject("dist");
+        rec2 = jo2.getJSONObject("dist");
+        set1 = rec.keySet();//第一个串的city集合
+        set2 = rec2.keySet();//第二个串的city集合
 
-        Set<String> set3 = new HashSet<String>();
+        set3 = new HashSet<String>();
         for (String s : set2) {
             for (String s2 : set1) {
                 if (s.equals(s2)) {
@@ -68,7 +119,7 @@ public class jsonUtils {
                 }
             }
         }
-        Set<String> set4 = new HashSet<String>();
+        set4 = new HashSet<String>();
         set4.addAll(set2);
         set4.removeAll(set3);
 
@@ -80,7 +131,7 @@ public class jsonUtils {
         }
         if (set3.size() != 0) {
             for (String s : set3) {
-                JSONObject jo = rec.getJSONObject(s);
+                jo = rec.getJSONObject(s);
                 jo.put("rec", rec.getJSONObject(s).getInteger("rec") + rec2.getJSONObject(s).getInteger("rec"));
                 jo.put("sed", rec.getJSONObject(s).getInteger("sed") + rec2.getJSONObject(s).getInteger("sed"));
                 jo.put("sedPrice", rec.getJSONObject(s).getInteger("sedPrice") + rec2.getJSONObject(s).getInteger("sedPrice"));
@@ -89,16 +140,11 @@ public class jsonUtils {
         return jo1.toString();
     }
     public static String keyCityAdd(String jsonStr1, String jsonStr2){
-        List<String> lt = new ArrayList<String>();
-        lt.add("toProv");
-        lt.add("toCity");
-        lt.add("fromCity");
-        lt.add("fromProv");
-        JSONObject jo00 = JSONObject.parseObject(jsonStr1);
-        JSONObject jo01 = JSONObject.parseObject(jsonStr2);
-        JSONObject jo1 = JSONObject.parseObject(jo00.getString("keyCity"));
-        JSONObject jo12 = JSONObject.parseObject(jo00.getString("keyCity"));
-        JSONObject jo2 = JSONObject.parseObject(jo01.getString("keyCity"));
+        jo00 = JSONObject.parseObject(jsonStr1);
+        jo01 = JSONObject.parseObject(jsonStr2);
+        jo1 = JSONObject.parseObject(jo00.getString("keyCity"));
+        jo12 = JSONObject.parseObject(jo00.getString("keyCity"));
+        jo2 = JSONObject.parseObject(jo01.getString("keyCity"));
 
         for (Map.Entry<String, Object> entry1 : jo12.entrySet()) {
             for (Map.Entry<String, Object> entry2 : jo2.entrySet()){
@@ -106,14 +152,14 @@ public class jsonUtils {
                     if (entry1.getKey().equals(entry2.getKey())){
                         //System.out.println("101100 相等 ");
                         // to-do
-                        JSONObject jo3 = JSONObject.parseObject(entry1.getValue().toString());
-                        JSONObject jo4 = JSONObject.parseObject(entry2.getValue().toString());
+                        jo3 = JSONObject.parseObject(entry1.getValue().toString());
+                        jo4 = JSONObject.parseObject(entry2.getValue().toString());
                         //System.out.println("jo3 --- " + jo3);
                         //System.out.println("jo4 --- " + jo4);
                         for (int i = 0; i < lt.size(); i++) {
-                            JSONObject jo5 = JSONObject.parseObject(jo3.getString(lt.get(i)));
-                            JSONObject jo52 = JSONObject.parseObject(jo3.getString(lt.get(i)));
-                            JSONObject jo6 = JSONObject.parseObject(jo4.getString(lt.get(i)));
+                            jo5 = JSONObject.parseObject(jo3.getString(lt.get(i)));
+                            jo52 = JSONObject.parseObject(jo3.getString(lt.get(i)));
+                            jo6 = JSONObject.parseObject(jo4.getString(lt.get(i)));
                             //System.out.println("jo5 --- " + jo5);
                             //System.out.println("jo6 --- " + jo6);
                             for (Map.Entry<String, Object> entry3 : jo52.entrySet()){
@@ -154,13 +200,13 @@ public class jsonUtils {
         return jo00.toString();
     }
     public static String pcAdd(String json1,String json2){
-        JSONObject jo1 = JSONObject.parseObject(json1);
-        JSONObject jo2 = JSONObject.parseObject(json2);
+        jo1 = JSONObject.parseObject(json1);
+        jo2 = JSONObject.parseObject(json2);
 
-        Set<String> set1 = jo1.getJSONObject("pc").keySet();
-        Set<String> set2 = jo2.getJSONObject("pc").keySet();
-        Set<String> set3 = new HashSet<String>();//pc相同的集合
-        Set<String> set4 = new HashSet<String>();//pc相同的集合
+        set1 = jo1.getJSONObject("pc").keySet();
+        set2 = jo2.getJSONObject("pc").keySet();
+        set3 = new HashSet<String>();//pc相同的集合
+        set4 = new HashSet<String>();//pc相同的集合
         for(String s:set2){
             for(String s2:set1){
                 if(s.equals(s2)){
@@ -187,10 +233,10 @@ public class jsonUtils {
                         jo1.getJSONObject("pc").getJSONObject(s).getInteger("allPrice")+
                                 jo2.getJSONObject("pc").getJSONObject(s).getInteger("allPrice"));
 
-                Set<String> set5 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").keySet();//第一个串中的prov值
-                Set<String> set6 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").keySet();//第二个串中的prov值
-                Set<String> set7 = new HashSet<String>();//两个串相同得到prov
-                Set<String> set8 = new HashSet<String>();//第一个串中没有的prov
+                set5 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").keySet();//第一个串中的prov值
+                set6 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").keySet();//第二个串中的prov值
+                set7 = new HashSet<String>();//两个串相同得到prov
+                set8 = new HashSet<String>();//第一个串中没有的prov
                 for(String i:set5){
                     for(String j:set6){
                         if(i.equals(j)){
@@ -219,10 +265,10 @@ public class jsonUtils {
                                 jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getInteger("sedPrice")+
                                         jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getInteger("sedPrice"));
 
-                        Set<String> set9 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
-                        Set<String> set10 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
-                        Set<String> set11 = new HashSet<String>();//两个串相同的city
-                        Set<String> set12 = new HashSet<String>();//第一个串中没有的city
+                        set9 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
+                        set10 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
+                        set11 = new HashSet<String>();//两个串相同的city
+                        set12 = new HashSet<String>();//第一个串中没有的city
                         for(String i:set9){
                             for(String j:set10){
                                 if(i.equals(j)){
@@ -253,10 +299,10 @@ public class jsonUtils {
                                                 +jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("sedPrice")
                                 );
 
-                                Set<String> set13 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第一个串中的dist值
-                                Set<String> set14 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第二个串中的dist值
-                                Set<String> set15 = new HashSet<String>();//两个串相同的dist
-                                Set<String> set16 = new HashSet<String>();//第一个串中没有的dist
+                                set13 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第一个串中的dist值
+                                set14 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第二个串中的dist值
+                                set15 = new HashSet<String>();//两个串相同的dist
+                                set16 = new HashSet<String>();//第一个串中没有的dist
                                 for(String i:set13){
                                     for(String j:set14){
                                         if(i.equals(j)){
@@ -297,13 +343,13 @@ public class jsonUtils {
     }
     // 电商企业
     public static String dsAdd(String json1,String json2){
-        JSONObject jo1 = JSONObject.parseObject(json1);
-        JSONObject jo2 = JSONObject.parseObject(json2);
+        jo1 = JSONObject.parseObject(json1);
+        jo2 = JSONObject.parseObject(json2);
 
-        Set<String> set1 = jo1.getJSONObject("ds").keySet();
-        Set<String> set2 = jo2.getJSONObject("ds").keySet();
-        Set<String> set3 = new HashSet<String>();//ds相同的集合
-        Set<String> set4 = new HashSet<String>();//第一个串中没有的ds值
+        set1 = jo1.getJSONObject("ds").keySet();
+        set2 = jo2.getJSONObject("ds").keySet();
+        set3 = new HashSet<String>();//ds相同的集合
+        set4 = new HashSet<String>();//第一个串中没有的ds值
         for(String i:set1){
             for(String j:set2){
                 if(i.equals(j)){
@@ -330,10 +376,10 @@ public class jsonUtils {
                         jo1.getJSONObject("ds").getJSONObject(d).getInteger("allPrice")+
                                 jo2.getJSONObject("ds").getJSONObject(d).getInteger("allPrice") );
 
-                Set<String> set5 = jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").keySet();//第一个串中的prov值
-                Set<String> set6 = jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").keySet();//第二个串中的prov值
-                Set<String> set7 = new HashSet<String>();//两个串相同得到prov
-                Set<String> set8 = new HashSet<String>();//第一个串中没有的prov
+                set5 = jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").keySet();//第一个串中的prov值
+                set6 = jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").keySet();//第二个串中的prov值
+                set7 = new HashSet<String>();//两个串相同得到prov
+                set8 = new HashSet<String>();//第一个串中没有的prov
                 for(String i:set5){
                     for(String j:set6){
                         if(i.equals(j)){
@@ -361,10 +407,10 @@ public class jsonUtils {
                                 jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getInteger("sedPrice")+
                                         jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getInteger("sedPrice"));
 
-                        Set<String> set9 = jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
-                        Set<String> set10 = jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
-                        Set<String> set11 = new HashSet<String>();//两个串相同的city
-                        Set<String> set12 = new HashSet<String>();//第一个串中没有的city
+                        set9 = jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
+                        set10 = jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
+                        set11 = new HashSet<String>();//两个串相同的city
+                        set12 = new HashSet<String>();//第一个串中没有的city
                         for(String i:set9){
                             for(String j:set10){
                                 if(i.equals(j)){
@@ -393,10 +439,10 @@ public class jsonUtils {
                                         jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("sedPrice")+
                                                 jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("sedPrice"));
 
-                                Set<String> set13 = jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第一个串中的dist值
-                                Set<String> set14 = jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第二个串中的dist值
-                                Set<String> set15 = new HashSet<String>();//两个串相同的dist
-                                Set<String> set16 = new HashSet<String>();//第一个串中没有的dist
+                                set13 = jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第一个串中的dist值
+                                set14 = jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第二个串中的dist值
+                                set15 = new HashSet<String>();//两个串相同的dist
+                                set16 = new HashSet<String>();//第一个串中没有的dist
                                 for(String i:set13){
                                     for(String j:set14){
                                         if(i.equals(j)){
@@ -425,49 +471,41 @@ public class jsonUtils {
                                         jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(di).put("sedPrice",
                                                 jo1.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(di).getInteger("sedPrice")+
                                                         jo2.getJSONObject("ds").getJSONObject(d).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(di).getInteger("sedPrice") );
-
                                     }
                                 }
                             }
                         }
                     }
-
                 }
-
             }
-
         }
         return jo1.toString();
     }
     // 按省份 json串合并
     public static String provAdd(String j1,String j2){
-        List<String> cd = new ArrayList<String>();
-        cd.add("city");
-        cd.add("dist");
+        jo1 = JSONObject.parseObject(j1);
+        jo2 = JSONObject.parseObject(j2);
 
-        JSONObject o1 = JSONObject.parseObject(j1);
-        JSONObject o2 = JSONObject.parseObject(j2);
-
-        JSONObject o3 = JSONObject.parseObject(o1.getString("prov"));
-        JSONObject o32 = JSONObject.parseObject(o1.getString("prov"));
-        JSONObject o4 = JSONObject.parseObject(o2.getString("prov"));
+        jo3 = JSONObject.parseObject(jo1.getString("prov"));
+        o32 = JSONObject.parseObject(jo1.getString("prov"));
+        jo4 = JSONObject.parseObject(jo2.getString("prov"));
 
         for (Map.Entry<String, Object> entry1 : o32.entrySet()){
-            for (Map.Entry<String, Object> entry2 : o4.entrySet()){
-                if (o3.containsKey(entry2.getKey())){
+            for (Map.Entry<String, Object> entry2 : jo4.entrySet()){
+                if (jo3.containsKey(entry2.getKey())){
                     if (entry1.getKey().equals(entry2.getKey())) {
                         //
-                        JSONObject o5 = JSONObject.parseObject(entry1.getValue().toString());
-                        JSONObject o6 = JSONObject.parseObject(entry2.getValue().toString());
-                        int sum_rec = Integer.parseInt(o5.get("rec").toString()) + Integer.parseInt(o6.get("rec").toString());
-                        int sum_sed = Integer.parseInt(o5.get("sed").toString()) + Integer.parseInt(o6.get("sed").toString());
-                        int sum_sedPrice = Integer.parseInt(o5.get("sedPrice").toString()) + Integer.parseInt(o6.get("sedPrice").toString());
-                        o5.put("rec", sum_rec);
-                        o5.put("sed", sum_sed);
-                        o5.put("sedPrice", sum_sedPrice);
-                        o3.put(entry1.getKey(), o5);
-                        JSONObject o7 = JSONObject.parseObject(o5.getString("to"));
-                        JSONObject o8 = JSONObject.parseObject(o6.getString("to"));
+                        jo5 = JSONObject.parseObject(entry1.getValue().toString());
+                        jo6 = JSONObject.parseObject(entry2.getValue().toString());
+                        sum_rec = Float.parseFloat(jo5.get("rec").toString()) + Float.parseFloat(jo6.get("rec").toString());
+                        sum_sed = Float.parseFloat(jo5.get("sed").toString()) + Float.parseFloat(jo6.get("sed").toString());
+                        sum_sedPrice = Float.parseFloat(jo5.get("sedPrice").toString()) + Float.parseFloat(jo6.get("sedPrice").toString());
+                        jo5.put("rec", sum_rec);
+                        jo5.put("sed", sum_sed);
+                        jo5.put("sedPrice", sum_sedPrice);
+                        jo3.put(entry1.getKey(), jo5);
+                        o7 = JSONObject.parseObject(jo5.getString("to"));
+                        o8 = JSONObject.parseObject(jo6.getString("to"));
                         //System.out.println(o7);
 
                         // 判断 o7和o8是否为空的情况
@@ -477,61 +515,55 @@ public class jsonUtils {
                                 for (Map.Entry<String, Object> entry4 : o8.entrySet()) {
                                     if (!entry3.getKey().equals("city") && !entry3.getKey().equals("dist") && o7.containsKey(entry4.getKey()) && !entry4.getKey().equals("city") && !entry4.getKey().equals("city")) {
                                         if (entry3.getKey().equals(entry4.getKey())) {
-                                            int sum_pro = Integer.parseInt(entry3.getValue().toString()) + Integer.parseInt(entry4.getValue().toString());
+                                            sum_pro = Integer.parseInt(entry3.getValue().toString()) + Integer.parseInt(entry4.getValue().toString());
                                             //System.out.println(sum_pro);
                                             o7.put(entry3.getKey(), sum_pro);
                                             //System.out.println("o7---" + o7);
-                                            o5.put("to", o7);
+                                            jo5.put("to", o7);
                                             //System.out.println("o5---" + o5);
                                         }
                                     } else if (!entry3.getKey().equals("city") && !entry3.getKey().equals("dist") && !o7.containsKey(entry4.getKey()) && !entry4.getKey().equals("city") && !entry4.getKey().equals("city")) {
                                         o7.put(entry4.getKey(), entry4.getValue());
-                                        o5.put(entry3.getKey(), o7);
+                                        jo5.put(entry3.getKey(), o7);
                                         //System.out.println(o5);
                                     }
                                 }
                             }
 
                             for (int i = 0; i < cd.size(); i++) {
-                                JSONObject o9 = JSONObject.parseObject(o7.getString(cd.get(i)));
-                                JSONObject o10 = JSONObject.parseObject(o8.getString(cd.get(i)));
+                                o9 = JSONObject.parseObject(o7.getString(cd.get(i)));
+                                o10 = JSONObject.parseObject(o8.getString(cd.get(i)));
 
                                 for (Map.Entry<String, Object> entry5 : o9.entrySet()) {
                                     for (Map.Entry<String, Object> entry6 : o10.entrySet()) {
                                         if (o9.containsKey(entry6.getKey())) {
                                             if (entry5.getKey().equals(entry6.getKey())) {
-                                                int sum = Integer.parseInt(entry5.getValue().toString()) + Integer.parseInt(entry6.getValue().toString());
-                                                //System.out.println(sum);
+                                                sum = Float.parseFloat(entry5.getValue().toString()) + Float.parseFloat(entry6.getValue().toString());
                                                 o9.put(entry5.getKey(), sum);
                                                 o7.put(cd.get(i), o9);
                                             }
                                         } else {
                                             o9.put(entry6.getKey(), entry6.getValue());
-                                            //System.out.println("o9***" + o9);
                                             o7.put(cd.get(i), o9);
                                         }
                                     }
                                 }
-
                             }
-
                         }else if (o7.isEmpty() && !o8.isEmpty()){
-                            o5.put("to",o8);
+                            jo5.put("to",o8);
                         }
                         // todo
-                        o3.put(entry1.getKey(),o5);
+                        jo3.put(entry1.getKey(),jo5);
                     }
-
                 }
                 else {
                     //System.out.println(entry2.getKey());
                     //System.out.println(entry2.getKey() + entry2.getValue());
-                    o3.put(entry2.getKey(),entry2.getValue());
+                    jo3.put(entry2.getKey(),entry2.getValue());
                 }
             }
         }
-        o1.put("prov",o3);
-        return o1.toString();
+        jo1.put("prov",jo3);
+        return jo1.toString();
     }
-
 }

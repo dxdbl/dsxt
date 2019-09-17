@@ -5,6 +5,7 @@
 
 ```sql  
 
+
 -- 创建 hbase 表存储非重复单号数据并且用于去重  
 drop table order_online;  
 CREATE  TABLE  order_online(   
@@ -111,5 +112,11 @@ jobproperties("morphling.job.checkpoint.interval"="3600000",  --checkpoint间隔
     "morphling.job.enable.checkpoint"="true",  --定义该任务是否启用HA  
     "morphling.task.max.failures"="3", --任务失败重试次数  
     "stream.number.receivers"="1");    -- receivers 个数设置  
+
+-- 启动流任务  
+stop streamjob topic_data_aggregate;
+start streamjob topic_data_aggregate ;  
+stop streamjob update_redis;
+start streamjob update_redis ;  
 
 ```

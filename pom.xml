@@ -87,7 +87,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>io.transwarp.udaf.pcAdd</mainClass>
+                            <mainClass>io.transwarp.udf.test</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

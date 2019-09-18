@@ -200,7 +200,11 @@ public class jsonUtil {
     public  static String DateTime(String date) {
         Date now = new Date();
         int hour = now.getHours();
-        return (date.split(" ")[0].replace("-", "") + hour);
+        if (hour < 10){
+            return (date.split(" ")[0].replace("-", "") + "0" + hour);
+        }else{
+            return (date.split(" ")[0].replace("-", "") + hour);
+        }
     }
 
     public static  String Dist(String send, String rec) {

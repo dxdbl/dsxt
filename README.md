@@ -4,8 +4,6 @@
 ##### 下面是slipstream中的创建stream语句(不一定是最终版本..)
 
 ```sql  
-
-
 -- 创建 hbase 表存储非重复单号数据并且用于去重  
 drop table order_online;  
 CREATE  TABLE  order_online(   
@@ -45,8 +43,13 @@ CREATE STREAM order_aggregate AS select
     ,agg[10] as secondSpeed -- 消费速度 默认 1  
     ,agg[11] as flag -- 是否重复标志  
     ,agg[12] as sp  -- 预留 未来业务需要  
-    from (select split(order,'#') as agg from  order_middle)  
-     STREAMWINDOW w1 AS(length '10' second slide '10' second);  
+    from (select split(order,'#') as agg from  order_middle) ;  
+
+-- 创建 window 窗口
+DROP STREAM order_aggregate_window;  
+CREATE STREAM order_aggregate_window AS select  
+id,ds,countryAllCnt,countryAllPrice,city,dist,keycity,pc,prov,s,secondSpeed,flag,sp  
+from order_aggregate STREAMWINDOW w1 AS(length '10' second slide '10' second);  
 
 -- 创建流 input stream 用于存储聚合后的结果(单分区 topic)  
 DROP STREAM order_after_aggregate;  
@@ -88,8 +91,8 @@ create streamjob topic_data_aggregate as
      from  order_aggregate_window GROUP BY id")  
      jobproperties("morphling.job.checkpoint.interval"="3600000",  --checkpoint间隔,单位(毫秒)
                     "morphling.job.enable.checkpoint"="true",  --定义该任务是否启用HA  
-                    "morphling.task.max.failures"="3", --任务失败重试次数  
-                    "stream.number.receivers"="2");  -- receivers 个数设置  
+                    "morphling.task.max.failures"="1", --任务失败重试次数  
+                    "stream.number.receivers"="2");  -- receivers 个数设置(开启checkpoint失效)  
 
 -- 读取 aggregate 数据, 将聚合后json加到redis中  
 --- 1. 取出对应key的json串  
@@ -97,7 +100,9 @@ create streamjob topic_data_aggregate as
 --- 3.将相加结果update回redis)  
 
 -- 创建存储处理结果得hbase表
-create table dsxt.out(id string,res string)stored as hyperdrive;  
+drop table dsxt.out;
+create table dsxt.out(id string,res string,time string)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler';    
 
 -- 创建 streamjob 
 drop streamjob update_redis;  
@@ -106,12 +111,12 @@ create streamjob update_redis as
      uuid()
     ,updateRedis(id,ds,countryAllCnt,countryAllPrice
     ,city,dist,keycity,pc,prov,
-    s,secondSpeed,flag,sp)  
+    s,secondSpeed,flag,sp) ,unix_timestamp() 
 from  order_after_aggregate")  
 jobproperties("morphling.job.checkpoint.interval"="3600000",  --checkpoint间隔,单位(毫秒)  
     "morphling.job.enable.checkpoint"="true",  --定义该任务是否启用HA  
-    "morphling.task.max.failures"="3", --任务失败重试次数  
-    "stream.number.receivers"="1");    -- receivers 个数设置  
+    "morphling.task.max.failures"="1", --任务失败重试次数  
+    "stream.number.receivers"="1");    -- receivers 个数设置(开启checkpoint失效)  
 
 -- 启动流任务  
 stop streamjob topic_data_aggregate;

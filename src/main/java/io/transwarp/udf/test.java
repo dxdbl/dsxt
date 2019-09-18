@@ -2,6 +2,9 @@ package io.transwarp.udf;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * @description:
  * @author: mhf
@@ -10,10 +13,16 @@ import com.alibaba.fastjson.JSONObject;
 public class test {
     public static void main(String[] args) {
 
-        String a = "{\"num\":1.005E+7}";
-        JSONObject jo = JSONObject.parseObject(a);
-        float b = jo.getFloat("num");
-        float c = b + 2;
-        System.out.println(c);
+        System.out.println(DateTime("2019-09-18 18:19:01"));
+    }
+    public  static String DateTime(String date) {
+        Date now = new Date();
+        int hour = now.getHours();
+        if (hour < 10){
+            return (date.split(" ")[0].replace("-", "") + "0" + hour);
+        }else{
+            return (date.split(" ")[0].replace("-", "") + hour);
+        }
+
     }
 }

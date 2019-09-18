@@ -15,36 +15,8 @@ import java.io.IOException;
 public class PreProcessing2 extends UDF {
     private  Logger log = Logger.getLogger(preprocessing.class);
     // hbase 表结构 rowley 存储单号，q1存储 flag ，q2存储 消息json串
-    private  String[] columns = {"q1","q2"};
-    private  JSONObject jo;
-    private  String send_city;
-    private  String send_dist;
-    private  String rec_city;
-    private  String rec_dist;
-    private  String mailNo;
-    private  String ds_name;
-    private  String time;
-    private  String pc_name;
-    private  String dt;
-    private  String flag;
-    private  String send_pro_code;
-    private  String send_city_code;
-    private  String send_dist_code;
-    private  String rec_pro_code;
-    private  String rec_city_code;
-    private  String rec_dist_code;
-    private  String ds_code;
-    private  String pc_code;
-    private  String ds;
-    private  String city;
-    private  String dist;
-    private  String key_city;
-    private  String pc;
-    private  String prov;
-    private  String result_json_str;
-    private  String send_pro;
-    private  String rec_pro;
-    private  String[] values = {"1", "jsonstr"};
+    public static   String[] columns = {"q1","q2"};
+    public static   String[] values = {"1", "jsonstr"};
     private  Table table;
     private  Get get;
 
@@ -68,24 +40,24 @@ public class PreProcessing2 extends UDF {
     }
 
     private String evaluate(String jsonStr) {
-        jo = JSONObject.parseObject(jsonStr);
+        JSONObject jo = JSONObject.parseObject(jsonStr);
         log.info("##################### json对象化成功 ############");
 
         // 获取json串中的电商平台,推送时间,单号
-        mailNo = jo.getString("mailNo");
+        String mailNo = jo.getString("mailNo");
         log.info("##################### 获取 mailNo 成功 ############");
-        ds_name = jo.getString("ecCompanyId");
+        String ds_name = jo.getString("ecCompanyId");
         log.info("##################### 获取 ecCompanyId 成功 ############");
-        time = jo.getString("sysDate");
+        String time = jo.getString("sysDate");
         log.info("##################### 获取 sysDate 成功 ############");
-        pc_name= jo.getString("logisticProviderID"); // pc 快递企业
+        String pc_name= jo.getString("logisticProviderID"); // pc 快递企业
         log.info("##################### 获取 logisticProviderID 成功 ############");
 
         // 生成时间key
-        dt = jsonUtil.DateTime(time);
+        String dt = jsonUtil.DateTime(time);
         log.info("##################### dt 成功 ############" + dt);
 
-        //flag = null;
+        String flag = null;
         try {
             flag = getOneRecordByCol("dsxt.order_online", mailNo, "f", "q1");
             log.info("##################### getOneRecordByCol 成功 ############" );
@@ -102,42 +74,46 @@ public class PreProcessing2 extends UDF {
             }
             if (ds_name.equals("JBD")){
                 log.info("##################### JBD判断 成功 ############" );
-                send_pro_code = jo.getString("senProvCode");
+                String send_pro_code = jo.getString("senProvCode");
                 log.info("##################### send_pro_code 成功 ############" + send_pro_code);
-                send_city_code = jo.getString("senCityCode");
+                String send_city_code = jo.getString("senCityCode");
                 log.info("##################### send_city_code 成功 ############" + send_city_code);
-                send_dist_code = jo.getString("senCountyCode");
+                String send_dist_code = jo.getString("senCountyCode");
                 log.info("##################### send_dist_code 成功 ############" + send_dist_code);
 
-                rec_pro_code = "999999";
-                rec_city_code = "999999";
-                rec_dist_code = "999999";
+                String rec_pro_code = "999999";
+                String rec_city_code = "999999";
+                String rec_dist_code = "999999";
 
                 // 京邦达 code
-                ds_code = "30000";
+                String ds_code = "30000";
 
                 // 获取企业code
-                pc_code= jsonUtil.getPcCode(pc_name);
+                String pc_code= jsonUtil.getPcCode(pc_name);
                 log.info("##################### getPcCode 成功 ############" + pc_code);
 
                 // 生成最终中间结果字符串
-                ds = jsonUtil.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
-                city = jsonUtil.byCity(send_city_code,rec_city_code);
-                dist = jsonUtil.Dist(send_dist_code,rec_dist_code);
-                key_city = jsonUtil.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
-                pc = jsonUtil.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
-                prov = jsonUtil.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
+                String ds = jsonUtil.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
+                String city = jsonUtil.byCity(send_city_code,rec_city_code);
+                String dist = jsonUtil.Dist(send_dist_code,rec_dist_code);
+                String key_city = jsonUtil.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
+                String  pc = jsonUtil.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
+                String  prov = jsonUtil.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
 
                 // 拼接最终结果json字符串
-                result_json_str = dt + "#" + ds + "#" + "1" + "#" + "224" + "#" + city + "#" + dist + "#" + key_city + "#" + pc + "#" + prov + "#" + "true" + "#" + "1" + "#" + "0" + "#" + "sp";
+                String result_json_str = dt + "#" + ds + "#" + "1" + "#" + "224" + "#" + city + "#" + dist + "#" + key_city + "#" + pc + "#" + prov + "#" + "true" + "#" + "1" + "#" + "0" + "#" + "sp";
 
                 // 返回最终结果
                 return result_json_str;
             }
             else if (ds_name.equals("TAOBAO")){
 
-                send_pro = jo.getString("senProvCode");
-                rec_pro = jo.getString("recProvCode");
+                String send_pro = jo.getString("senProvCode");
+                String rec_pro = jo.getString("recProvCode");
+                String send_city = null;
+                String send_dist = null;
+                String rec_city = null;
+                String rec_dist = null;
 
                 if (jo.getString("senCityCode").contains(",")){
                     send_city = jo.getString("senCityCode").split(",")[0];
@@ -157,30 +133,30 @@ public class PreProcessing2 extends UDF {
                     rec_dist = "distisempty";
                 }
 
-                send_pro_code = jsonUtil.getProvinceCode(send_pro);
-                send_city_code = jsonUtil.getCityCode(send_pro,send_city,send_dist);
-                send_dist_code = jsonUtil.getDistCode(send_pro,send_city,send_dist);
+                String send_pro_code = jsonUtil.getProvinceCode(send_pro);
+                String send_city_code = jsonUtil.getCityCode(send_pro,send_city,send_dist);
+                String send_dist_code = jsonUtil.getDistCode(send_pro,send_city,send_dist);
 
-                rec_pro_code = jsonUtil.getProvinceCode(rec_pro);
-                rec_city_code = jsonUtil.getCityCode(rec_pro,rec_city,rec_dist);
-                rec_dist_code = jsonUtil.getDistCode(rec_pro,rec_city,rec_dist);
+                String rec_pro_code = jsonUtil.getProvinceCode(rec_pro);
+                String  rec_city_code = jsonUtil.getCityCode(rec_pro,rec_city,rec_dist);
+                String rec_dist_code = jsonUtil.getDistCode(rec_pro,rec_city,rec_dist);
 
                 // 电商企业 code
-                ds_code = jsonUtil.getDsCode(ds_name);
+                String  ds_code = jsonUtil.getDsCode(ds_name);
 
                 // 获取企业code
-                pc_code= jsonUtil.getPcCode(pc_name);
+                String pc_code= jsonUtil.getPcCode(pc_name);
 
                 // 生成最终中间结果字符串
-                ds = jsonUtil.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
-                city = jsonUtil.byCity(send_city_code,rec_city_code);
-                dist = jsonUtil.Dist(send_dist_code,rec_dist_code);
-                key_city = jsonUtil.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
-                pc = jsonUtil.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
-                prov = jsonUtil.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
+                String  ds = jsonUtil.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
+                String city = jsonUtil.byCity(send_city_code,rec_city_code);
+                String  dist = jsonUtil.Dist(send_dist_code,rec_dist_code);
+                String  key_city = jsonUtil.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
+                String  pc = jsonUtil.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
+                String prov = jsonUtil.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
 
                 // 拼接最终结果json字符串
-                result_json_str = dt + "#" + ds + "#" + "1" + "#" + "224" + "#" + city + "#" + dist + "#" + key_city + "#" + pc + "#" + prov + "#" + "true" + "#" + "1" + "#" + "0" + "#" + "sp";
+                String result_json_str = dt + "#" + ds + "#" + "1" + "#" + "224" + "#" + city + "#" + dist + "#" + key_city + "#" + pc + "#" + prov + "#" + "true" + "#" + "1" + "#" + "0" + "#" + "sp";
 
                 // 返回最终结果
                 return result_json_str;

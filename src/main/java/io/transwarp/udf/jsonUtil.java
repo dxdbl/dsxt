@@ -15,17 +15,9 @@ import java.util.regex.Pattern;
  */
 public class jsonUtil {
 
-    public static String dist_str;
+    public static   String dist_str;
     public static String pc_str;
     public static String ds_str;
-    private static JSONObject o2 = null;
-    private static JSONObject o3 = null;
-    private static JSONObject o4 = null;
-    private static JSONArray jsonArray;
-    private static String  regex;
-    private static int i;
-    private static int hour;
-    private static String result;
 
     static {
         try {
@@ -50,7 +42,7 @@ public class jsonUtil {
          * @time: 2019/8/20 10:15
          */
         if (distJson.containsKey(province)) {
-            o2 = JSONObject.parseObject(distJson.getString(province));
+            JSONObject o2 = JSONObject.parseObject(distJson.getString(province));
             return o2.getString("v");
         }
         return "999999";
@@ -70,16 +62,16 @@ public class jsonUtil {
             city = dist;
         }
         if (distJson.containsKey(province)) {
-            o2 = JSONObject.parseObject(distJson.getString(province));
+            JSONObject o2 = JSONObject.parseObject(distJson.getString(province));
             if (o2.containsKey(city)) {
-                o3 = JSONObject.parseObject(o2.getString(city));
+                JSONObject  o3 = JSONObject.parseObject(o2.getString(city));
                 return o3.getString("v");
             }
         }
         return "999999";
     }
 
-    public static String getDistCode(String province, String city, String dist) {
+    public static  String getDistCode(String province, String city, String dist) {
         /**
          * @description: 获取地区的code
          * @param province 示例 山东省
@@ -90,18 +82,18 @@ public class jsonUtil {
          * @time: 2019/8/20 10:12
          */
         if (province.equals(city)) {
-            o2 = JSONObject.parseObject(distJson.getString(province));
+            JSONObject o2 = JSONObject.parseObject(distJson.getString(province));
             if (o2.containsKey(dist)) {
-                o3 = JSONObject.parseObject(o2.getString(dist));
+                JSONObject  o3 = JSONObject.parseObject(o2.getString(dist));
                 return o3.getString("v");
             }
         }
         if (distJson.containsKey(province)) {
-            o2 = JSONObject.parseObject(distJson.getString(province));
+            JSONObject o2 = JSONObject.parseObject(distJson.getString(province));
             if (o2.containsKey(city)) {
-                o3 = JSONObject.parseObject(o2.getString(city));
+                JSONObject  o3 = JSONObject.parseObject(o2.getString(city));
                 if (o3.containsKey(dist)) {
-                    o4 = JSONObject.parseObject(o3.getString(dist));
+                    JSONObject    o4 = JSONObject.parseObject(o3.getString(dist));
                     return o4.getString("v");
                 }
             }
@@ -110,14 +102,14 @@ public class jsonUtil {
     }
 
     // 获取快递企业code
-    public static String getPcCode(String pc) {
+    public  static String getPcCode(String pc) {
         //fastjson解析方法
-        jsonArray = JSONObject.parseArray(pcJson.getString("pcCleanDim"));
-        for (i = 0; i < jsonArray.size(); i++) {
+       JSONArray jsonArray = JSONObject.parseArray(pcJson.getString("pcCleanDim"));
+        for (int i = 0; i < jsonArray.size(); i++) {
             // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-            o4 = jsonArray.getJSONObject(i);
+            JSONObject  o4 = jsonArray.getJSONObject(i);
             //正则表达式匹配
-            regex = o4.getString("reg");
+           String regex = o4.getString("reg");
             if (pc.matches(regex)) {
                 return o4.getString("m");
             }
@@ -125,15 +117,15 @@ public class jsonUtil {
         return "9999";
     }
     // 获取电商企业code
-    public static String getDsCode(String ds) {
+    public  static String getDsCode(String ds) {
         //fastjson解析方法
-        jsonArray = JSONObject.parseArray(dsJson.getString("dsCleanDim"));
-        for (i = 0; i < jsonArray.size(); i++) {
+         JSONArray jsonArray = JSONObject.parseArray(dsJson.getString("dsCleanDim"));
+        for (int i = 0; i < jsonArray.size(); i++) {
             // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-            o4 = jsonArray.getJSONObject(i);
+            JSONObject  o4 = jsonArray.getJSONObject(i);
             //System.out.println(job.get("reg"));
             //正则表达式匹配
-            regex = o4.getString("reg");
+           String regex = o4.getString("reg");
             if (ds.matches(regex)) {
                 return o4.getString("m");
             }
@@ -141,7 +133,8 @@ public class jsonUtil {
         return "99999";
     }
 
-    public static String byCity(String send, String rec) {
+    public  static String byCity(String send, String rec) {
+        String result = "";
         if (send.equals(rec)){
             result = "{\"city\":{\"" + send + "\":{\"rec\":1,\"sed\":1,\"sedPrice\":224}}}";
         }
@@ -152,7 +145,8 @@ public class jsonUtil {
         return result;
     }
 
-    public static String Prov(String s_p,String r_p,String r_c,String r_d) {
+    public  static String Prov(String s_p,String r_p,String r_c,String r_d) {
+        String result = "";
         if (!s_p.equals(r_p)) {
             result = "{\"prov\":{\"" + r_p + "\":{\"rec\":1,\"sed\":0,\"sedPrice\":0,\"to\":{}},\"" + s_p + "\":{\"rec\":0,\"sed\":1,\"sedPrice\":224,\"to\":{\"" + r_p + "\":1,\"city\":{\"" + r_c + "\":1},\"dist\":{\"" + r_d + "\":1}}}}}";
         } else {
@@ -162,7 +156,8 @@ public class jsonUtil {
         return result;
     }
 
-    public static String ds(String ds_code,String s_p,String s_c,String s_d,String r_p,String r_c,String r_d) {
+    public  static String ds(String ds_code,String s_p,String s_c,String s_d,String r_p,String r_c,String r_d) {
+        String result = "";
         if(s_p == r_p && s_c != r_c && s_d != r_d) {
             result = "{\"ds\":{\""+ds_code+"\":{\"all\":1,\"allPrice\":224,\"prov\":{\""+r_p+"\":{\"city\":{\""+r_c+"\":{\"dist\":{\""+r_d+"\":{\"rec\":1,\"sed\":0,\"sedPrice\":0}},\"rec\":1,\"sed\":0,\"sedPrice\":0},\""+s_c+"\":{\"dist\":{\""+s_d+"\":{\"rec\":0,\"sed\":1,\"sedPrice\":224}},\"rec\":0,\"sed\":1,\"sedPrice\":224}},\"rec\":1,\"sed\":1,\"sedPrice\":224}}}}}";
         }else if(s_p == r_p && s_c == r_c && s_d != r_d){
@@ -175,7 +170,8 @@ public class jsonUtil {
         return result;
     }
 
-    public static String keyCityDataMsg(String pcCode, String provSedCode, String citySedCode, String provRecCode, String cityRecCode) {
+    public  static String keyCityDataMsg(String pcCode, String provSedCode, String citySedCode, String provRecCode, String cityRecCode) {
+        String result = "";
         if (citySedCode.equals(cityRecCode)) {
             result = "{\"keyCity\": {\"" + provSedCode + "\": {\"fromCity\": {\"" + citySedCode + "\": 1},\"fromProv\": {\"" + provSedCode + "\": 1},\"toCity\": {\"" + cityRecCode + "\": 1},\"toProv\": {\"" + provRecCode + "\": 1} },\"" + provRecCode + "\": {\"fromCity\": {\"" + citySedCode + "\": 1},\"fromProv\": {\"" + provSedCode + "\": 1 },\"toCity\": {},\"toProv\": {}}}}";
 
@@ -185,7 +181,8 @@ public class jsonUtil {
        return result;
     }
 
-    public static String pcDataMsg(String pc_code,String s_p,String s_c,String s_d,String r_p,String r_c,String r_d) {
+    public  static String pcDataMsg(String pc_code,String s_p,String s_c,String s_d,String r_p,String r_c,String r_d) {
+        String result = "";
         if(s_p .equals(r_p)  && !s_c.equals(r_c) ) {//省相同市不同
             result = "{\"pc\":{"+pc_code+":{\"all\":1,\"allPrice\":224,\"prov\":{"+s_p+":{\"city\":{"+r_c+":{\"dist\":{"+r_d+":{\"rec\":1,\"sed\":0,\"sedPrice\":0}},\"rec\":1,\"sed\":0,\"sedPrice\":0},"+s_c+":{\"dist\":{"+s_d+":{\"rec\":0,\"sed\":1,\"sedPrice\":224}},\"rec\":0,\"sed\":1,\"sedPrice\":224}},\"rec\":1,\"sed\":1,\"sedPrice\":224}}}}}";
         }else if(s_p == r_p && s_c == r_c && s_d != r_d){//省相同市相同区不同
@@ -200,14 +197,14 @@ public class jsonUtil {
         return result;
     }
 
-    public static String DateTime(String date) {
+    public  static String DateTime(String date) {
         Date now = new Date();
-        hour = now.getHours();
-        result = date.split(" ")[0].replace("-", "") + hour;
-        return result;
+        int hour = now.getHours();
+        return (date.split(" ")[0].replace("-", "") + hour);
     }
 
-    public static String Dist(String send, String rec) {
+    public static  String Dist(String send, String rec) {
+        String result = "";
         if (!send.equals(rec)) {
             result = "{\"dist\":{\"" + send + "\":{\"rec\":0,\"sed\":1,\"sedPrice\":224},\"" + rec + "\":{\"rec\":1,\"sed\":0,\"sedPrice\":0}}}";
 

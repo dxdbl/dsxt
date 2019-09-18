@@ -39,7 +39,7 @@ public class preprocessing extends UDF {
         }
     }
 
-    private String evaluate(String jsonStr) {
+    public String evaluate(String jsonStr) {
         JSONObject jo = JSONObject.parseObject(jsonStr);
         log.info("##################### json对象化成功 ############");
 

@@ -1,4 +1,7 @@
 package io.transwarp.udf;
+
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * @description:
  * @author: mhf
@@ -7,7 +10,10 @@ package io.transwarp.udf;
 public class test {
     public static void main(String[] args) {
 
-        String a = "99999999999";
-        System.out.println(Float.parseFloat(a));
+        String a = "{\"num\":1.005E+7}";
+        JSONObject jo = JSONObject.parseObject(a);
+        float b = jo.getFloat("num");
+        float c = b + 2;
+        System.out.println(c);
     }
 }

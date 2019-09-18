@@ -7,19 +7,12 @@ import io.transwarp.udaf.jsonUtils;
 
 public class updateRedis extends UDF {
 
-    private static Jedis jedis = new Jedis("10.11.220.15", 6379, 10000);
-    private static JSONObject json=JSONObject.parseObject("{}");
-    private static String hget;
-    private static String ds2 ;
-    private static String city2 ;
-    private static String dist2 ;
-    private static String keyCity2;
-    private static String pc2;
-    private static String prov2;
+    public static Jedis jedis = new Jedis("10.11.220.15", 6379, 10000);
 
     public String evaluate(String id, String ds, String countryallcnt, String countryallprice, String city, String dist, String keyCity, String pc, String prov, String sString, String secondspeed, String flag, String sp) {
 
-        hget = jedis.hget("JSON_STORE", "cachedD" + id);
+        JSONObject json=JSONObject.parseObject("{}");
+        String hget = jedis.hget("JSON_STORE", "cachedD" + id);
 
         if(hget==null||hget.equals("null")){
             if(ds.equals("")){
@@ -56,12 +49,12 @@ public class updateRedis extends UDF {
             json=JSONObject.parseObject(hget);
             if (json.containsKey("ds")&&!ds.equals("")) {
                 //将redis中的值和传过来的字符串拼接
-                ds2 = jsonUtils.dsAdd("{\"ds\":" +json.getJSONObject("ds")+"}", ds);
-                city2 = jsonUtils.cityAdd("{\"city\":" +json.getJSONObject("city")+"}", city);
-                dist2 = jsonUtils.distAdd("{\"dist\":" +json.getJSONObject("dist")+"}", dist);
-                keyCity2 = jsonUtils.keyCityAdd("{\"keyCity\":" +json.getJSONObject("keyCity")+"}", keyCity);
-                pc2= jsonUtils.pcAdd("{\"pc\":" +json.getJSONObject("pc")+"}", pc);
-                prov2 = jsonUtils.provAdd("{\"prov\":" +json.getJSONObject("prov")+"}", prov);
+                String ds2 = jsonUtils.dsAdd("{\"ds\":" +json.getJSONObject("ds")+"}", ds);
+                String  city2 = jsonUtils.cityAdd("{\"city\":" +json.getJSONObject("city")+"}", city);
+                String dist2 = jsonUtils.distAdd("{\"dist\":" +json.getJSONObject("dist")+"}", dist);
+                String  keyCity2 = jsonUtils.keyCityAdd("{\"keyCity\":" +json.getJSONObject("keyCity")+"}", keyCity);
+                String  pc2= jsonUtils.pcAdd("{\"pc\":" +json.getJSONObject("pc")+"}", pc);
+                String prov2 = jsonUtils.provAdd("{\"prov\":" +json.getJSONObject("prov")+"}", prov);
                 //put进去
                 json.put("ds",JSONObject.parseObject(ds2).getJSONObject("ds"));
                 json.put("city",JSONObject.parseObject(city2).getJSONObject("city"));

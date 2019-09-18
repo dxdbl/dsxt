@@ -13,10 +13,10 @@ import java.io.InputStreamReader;
 public class WirteIntoHbase {
 
     public static void main(String[] args) {
-        readTxtFile("E:\\0000-Transwarp\\0004-国家邮政局\\应用测试\\电商协同-中科软\\分省数据逻辑\\NameToValue.json");
     }
     //效率高
-    public static void readTxtFile(String filePath) {
+    public static String readTxtFile(String filePath,String tableName) {
+        String json = "";
         try {
             File file = new File(filePath);
             if (file.isFile() && file.exists()) {
@@ -24,14 +24,16 @@ public class WirteIntoHbase {
                 BufferedReader br = new BufferedReader(isr);
                 String lineTxt = null;
                 while ((lineTxt = br.readLine()) != null) {
-                    System.out.println(lineTxt);
+                    //System.out.println(lineTxt);
+                    json = json + lineTxt;
                 }
                 br.close();
             } else {
-                System.out.println("文件不存在!");
+                return "文件不存在!";
             }
         } catch (Exception e) {
-            System.out.println("文件读取错误!");
+            return "文件读取错误!";
         }
+        return json;
     }
 }

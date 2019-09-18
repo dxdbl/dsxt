@@ -143,6 +143,7 @@ public class hbaseUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        table.close();
         return "error";
     }
 
@@ -180,5 +181,6 @@ public class hbaseUtils {
         }
         table.put(put);
         System.out.println("add data Success!");
+        table.close();
     }
 }

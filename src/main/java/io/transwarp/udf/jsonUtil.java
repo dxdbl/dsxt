@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class jsonUtil {
 
-    public static   String dist_str;
+    public static String dist_str;
     public static String pc_str;
     public static String ds_str;
 

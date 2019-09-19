@@ -1,9 +1,7 @@
 package io.transwarp.utils;
+import io.transwarp.udf.hbaseUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * @description:
@@ -12,10 +10,25 @@ import java.io.InputStreamReader;
  */
 public class WirteIntoHbase {
 
+    // 写入相应hbase表 参数1 : 文件绝对路径 参数2 : hbase 表名
     public static void main(String[] args) {
+
+        String content = readTxtFile(args[0]);
+        try {
+            hbaseUtils.addRecord(args[1],"1","f","q1",content);
+            System.out.println("write into " + args[1] + "success!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            String txt = hbaseUtils.getOneRecordByCol(args[1],"1","f","q1");
+            System.out.println("read from hbase table is : \n" + txt);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     //效率高
-    public static String readTxtFile(String filePath,String tableName) {
+    public static String readTxtFile(String filePath) {
         String json = "";
         try {
             File file = new File(filePath);

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 public class updateRedis extends UDF {
 
     public static Jedis jedis = new Jedis("10.11.220.15", 6379, 10000);
+    jsonUtils jus = new jsonUtils();
 
     public String evaluate(String id, String ds, String countryallcnt, String countryallprice, String city, String dist, String keyCity, String pc, String prov, String sString, String secondspeed, String flag, String sp) {
 
@@ -50,12 +51,12 @@ public class updateRedis extends UDF {
             json=JSONObject.parseObject(hget);
             if (json.containsKey("ds")&&!ds.equals("")) {
                 //将redis中的值和传过来的字符串拼接
-                String ds2 = jsonUtils.dsAdd("{\"ds\":" +json.getJSONObject("ds")+"}", ds);
-                String  city2 = jsonUtils.cityAdd("{\"city\":" +json.getJSONObject("city")+"}", city);
-                String dist2 = jsonUtils.distAdd("{\"dist\":" +json.getJSONObject("dist")+"}", dist);
-                String  keyCity2 = jsonUtils.keyCityAdd("{\"keyCity\":" +json.getJSONObject("keyCity")+"}", keyCity);
-                String  pc2= jsonUtils.pcAdd("{\"pc\":" +json.getJSONObject("pc")+"}", pc);
-                String prov2 = jsonUtils.provAdd("{\"prov\":" +json.getJSONObject("prov")+"}", prov);
+                String ds2 = jus.dsAdd("{\"ds\":" + json.getJSONObject("ds").toString() +"}", ds);
+                String  city2 = jus.cityAdd("{\"city\":" +json.getJSONObject("city")+"}", city);
+                String dist2 = jus.distAdd("{\"dist\":" +json.getJSONObject("dist")+"}", dist);
+                String  keyCity2 = jus.keyCityAdd("{\"keyCity\":" +json.getJSONObject("keyCity")+"}", keyCity);
+                String  pc2= jus.pcAdd("{\"pc\":" +json.getJSONObject("pc")+"}", pc);
+                String prov2 = jus.provAdd("{\"prov\":" +json.getJSONObject("prov")+"}", prov);
                 //put进去
                 json.put("ds",JSONObject.parseObject(ds2).getJSONObject("ds"));
                 json.put("city",JSONObject.parseObject(city2).getJSONObject("city"));

@@ -33,7 +33,7 @@ public class jsonUtil {
     public static JSONObject pcJson = JSONObject.parseObject(pc_str);
     public static JSONObject dsJson = JSONObject.parseObject(ds_str);
 
-    public static String getProvinceCode(String province) {
+    public  String getProvinceCode(String province) {
         /**
          * @description: 获取省份code
          * @param province 示例 山东省
@@ -48,7 +48,7 @@ public class jsonUtil {
         return "999999";
     }
 
-    public static String getCityCode(String province, String city, String dist) {
+    public  String getCityCode(String province, String city, String dist) {
         /**
          * @description: 获取城市code
          * @param city 示例 上海市
@@ -71,7 +71,7 @@ public class jsonUtil {
         return "999999";
     }
 
-    public static  String getDistCode(String province, String city, String dist) {
+    public   String getDistCode(String province, String city, String dist) {
         /**
          * @description: 获取地区的code
          * @param province 示例 山东省
@@ -102,7 +102,7 @@ public class jsonUtil {
     }
 
     // 获取快递企业code
-    public  static String getPcCode(String pc) {
+    public   String getPcCode(String pc) {
         //fastjson解析方法
        JSONArray jsonArray = JSONObject.parseArray(pcJson.getString("pcCleanDim"));
         for (int i = 0; i < jsonArray.size(); i++) {
@@ -117,7 +117,7 @@ public class jsonUtil {
         return "9999";
     }
     // 获取电商企业code
-    public  static String getDsCode(String ds) {
+    public   String getDsCode(String ds) {
         //fastjson解析方法
          JSONArray jsonArray = JSONObject.parseArray(dsJson.getString("dsCleanDim"));
         for (int i = 0; i < jsonArray.size(); i++) {
@@ -133,7 +133,7 @@ public class jsonUtil {
         return "99999";
     }
 
-    public  static String byCity(String send, String rec) {
+    public   String byCity(String send, String rec) {
         String result = "";
         if (send.equals(rec)){
             result = "{\"city\":{\"" + send + "\":{\"rec\":1,\"sed\":1,\"sedPrice\":224}}}";
@@ -156,7 +156,7 @@ public class jsonUtil {
         return result;
     }
 
-    public  static String ds(String ds_code,String s_p,String s_c,String s_d,String r_p,String r_c,String r_d) {
+    public   String ds(String ds_code,String s_p,String s_c,String s_d,String r_p,String r_c,String r_d) {
         String result = "";
         if(s_p == r_p && s_c != r_c && s_d != r_d) {
             result = "{\"ds\":{\""+ds_code+"\":{\"all\":1,\"allPrice\":224,\"prov\":{\""+r_p+"\":{\"city\":{\""+r_c+"\":{\"dist\":{\""+r_d+"\":{\"rec\":1,\"sed\":0,\"sedPrice\":0}},\"rec\":1,\"sed\":0,\"sedPrice\":0},\""+s_c+"\":{\"dist\":{\""+s_d+"\":{\"rec\":0,\"sed\":1,\"sedPrice\":224}},\"rec\":0,\"sed\":1,\"sedPrice\":224}},\"rec\":1,\"sed\":1,\"sedPrice\":224}}}}}";
@@ -170,7 +170,7 @@ public class jsonUtil {
         return result;
     }
 
-    public  static String keyCityDataMsg(String pcCode, String provSedCode, String citySedCode, String provRecCode, String cityRecCode) {
+    public   String keyCityDataMsg(String pcCode, String provSedCode, String citySedCode, String provRecCode, String cityRecCode) {
         String result = "";
         if (citySedCode.equals(cityRecCode)) {
             result = "{\"keyCity\": {\"" + provSedCode + "\": {\"fromCity\": {\"" + citySedCode + "\": 1},\"fromProv\": {\"" + provSedCode + "\": 1},\"toCity\": {\"" + cityRecCode + "\": 1},\"toProv\": {\"" + provRecCode + "\": 1} },\"" + provRecCode + "\": {\"fromCity\": {\"" + citySedCode + "\": 1},\"fromProv\": {\"" + provSedCode + "\": 1 },\"toCity\": {},\"toProv\": {}}}}";
@@ -181,7 +181,7 @@ public class jsonUtil {
        return result;
     }
 
-    public  static String pcDataMsg(String pc_code,String s_p,String s_c,String s_d,String r_p,String r_c,String r_d) {
+    public   String pcDataMsg(String pc_code,String s_p,String s_c,String s_d,String r_p,String r_c,String r_d) {
         String result = "";
         if(s_p .equals(r_p)  && !s_c.equals(r_c) ) {//省相同市不同
             result = "{\"pc\":{"+pc_code+":{\"all\":1,\"allPrice\":224,\"prov\":{"+s_p+":{\"city\":{"+r_c+":{\"dist\":{"+r_d+":{\"rec\":1,\"sed\":0,\"sedPrice\":0}},\"rec\":1,\"sed\":0,\"sedPrice\":0},"+s_c+":{\"dist\":{"+s_d+":{\"rec\":0,\"sed\":1,\"sedPrice\":224}},\"rec\":0,\"sed\":1,\"sedPrice\":224}},\"rec\":1,\"sed\":1,\"sedPrice\":224}}}}}";
@@ -197,7 +197,7 @@ public class jsonUtil {
         return result;
     }
 
-    public  static String DateTime(String date) {
+    public   String DateTime(String date) {
         Date now = new Date();
         int hour = now.getHours();
         if (hour < 10){
@@ -207,7 +207,7 @@ public class jsonUtil {
         }
     }
 
-    public static  String Dist(String send, String rec) {
+    public   String Dist(String send, String rec) {
         String result = "";
         if (!send.equals(rec)) {
             result = "{\"dist\":{\"" + send + "\":{\"rec\":0,\"sed\":1,\"sedPrice\":224},\"" + rec + "\":{\"rec\":1,\"sed\":0,\"sedPrice\":0}}}";

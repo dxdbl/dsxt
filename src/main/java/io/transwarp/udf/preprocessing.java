@@ -19,6 +19,7 @@ public class preprocessing extends UDF {
     private static   String[] values = {"1", "jsonstr"};
     private  Table table;
     private  Get get;
+    private jsonUtil jsonUtil = new jsonUtil();
 
     public static Configuration conf = null;
 

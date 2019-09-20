@@ -75,10 +75,19 @@ public class preprocessing extends UDF {
             if (ds_name.equals("JBD")){
                 log.info("##################### JBD判断 成功 ############" );
                 String send_pro_code = jo.getString("senProvCode");
+                if (send_pro_code == null){
+                    send_pro_code = "999999";
+                }
                 log.info("##################### send_pro_code 成功 ############" + send_pro_code);
                 String send_city_code = jo.getString("senCityCode");
+                if (send_city_code == null){
+                    send_city_code = "999999";
+                }
                 log.info("##################### send_city_code 成功 ############" + send_city_code);
                 String send_dist_code = jo.getString("senCountyCode");
+                if (send_dist_code == null){
+                    send_dist_code = "999999";
+                }
                 log.info("##################### send_dist_code 成功 ############" + send_dist_code);
 
                 String rec_pro_code = "999999";

@@ -10,12 +10,13 @@ import org.apache.log4j.Logger;
  * @time: 2019/8/24 14:55
  */
 public class keyCityAdd extends UDAF {
+    jsonUtils ju = new jsonUtils();
 
-    public static class jsonStr{
+    public  class jsonStr{
         private String str;
     }
 
-    public static class keyCityAddEvaluator implements UDAFEvaluator {
+    public  class keyCityAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -41,7 +42,7 @@ public class keyCityAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = o;
                 }else{
-                    json.str = jsonUtils.keyCityAdd(json.str,o);
+                    json.str = ju.keyCityAdd(json.str,o);
                 }
             }
             return true;
@@ -66,7 +67,7 @@ public class keyCityAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = json1;
                 }else {
-                    json.str = jsonUtils.keyCityAdd(json.str,json1);
+                    json.str = ju.keyCityAdd(json.str,json1);
                 }
             }
             // TO-DO

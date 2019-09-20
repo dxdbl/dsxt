@@ -10,11 +10,13 @@ import org.apache.log4j.Logger;
  * @time: 2019/8/24 14:55
  */
 public class pcAdd extends UDAF {
-    public static class jsonStr{
+    jsonUtils ju = new jsonUtils();
+
+    public class jsonStr{
         private String str;
     }
 
-    public static class pcAddEvaluator implements UDAFEvaluator {
+    public class pcAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -40,7 +42,7 @@ public class pcAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = o;
                 }else{
-                    json.str = jsonUtils.pcAdd(json.str,o);
+                    json.str = ju.pcAdd(json.str,o);
                 }
             }
             return true;
@@ -65,7 +67,7 @@ public class pcAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = json1;
                 }else {
-                    json.str = jsonUtils.pcAdd(json.str,json1);
+                    json.str = ju.pcAdd(json.str,json1);
                 }
             }
             // TO-DO

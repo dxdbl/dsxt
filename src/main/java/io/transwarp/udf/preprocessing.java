@@ -13,10 +13,10 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 
 public class preprocessing extends UDF {
-    //private  Logger log = Logger.getLogger(preprocessing3.class);
+    private  Logger log = Logger.getLogger(preprocessing.class);
     // hbase 表结构 rowley 存储单号，q1存储 flag ，q2存储 消息json串
-    public static   String[] columns = {"q1","q2"};
-    public static   String[] values = {"1", "jsonstr"};
+    private static   String[] columns = {"q1","q2"};
+    private static   String[] values = {"1", "jsonstr"};
     private  Table table;
     private  Get get;
 
@@ -41,26 +41,26 @@ public class preprocessing extends UDF {
 
     public String evaluate(String jsonStr) {
         JSONObject jo = JSONObject.parseObject(jsonStr);
-        //log.info("##################### json对象化成功 ############");
+        log.info("##################### json对象化成功 ############");
 
         // 获取json串中的电商平台,推送时间,单号
         String mailNo = jo.getString("mailNo");
-        //log.info("##################### 获取 mailNo 成功 ############");
+        log.info("##################### 获取 mailNo 成功 ############");
         String ds_name = jo.getString("ecCompanyId");
-        //log.info("##################### 获取 ecCompanyId 成功 ############");
+        log.info("##################### 获取 ecCompanyId 成功 ############");
         String time = jo.getString("sysDate");
-        //log.info("##################### 获取 sysDate 成功 ############");
+        log.info("##################### 获取 sysDate 成功 ############");
         String pc_name= jo.getString("logisticProviderID"); // pc 快递企业
-        //log.info("##################### 获取 logisticProviderID 成功 ############");
+        log.info("##################### 获取 logisticProviderID 成功 ############");
 
         // 生成时间key
         String dt = jsonUtil.DateTime(time);
-        //log.info("##################### dt 成功 ############" + dt);
+        log.info("##################### dt 成功 ############" + dt);
 
         String flag = null;
         try {
             flag = getOneRecordByCol("dsxt.order_online", mailNo, "f", "q1");
-            //log.info("##################### getOneRecordByCol 成功 ############" );
+            log.info("##################### getOneRecordByCol 成功 ############" );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,18 +68,18 @@ public class preprocessing extends UDF {
             values[1] = jsonStr;
             try {
                 addData("dsxt.order_online", mailNo, columns, values);
-                //log.info("##################### addData 成功 ############" );
+                log.info("##################### addData 成功 ############" );
             } catch (IOException e) {
                 e.printStackTrace();
             }
             if (ds_name.equals("JBD")){
-                //log.info("##################### JBD判断 成功 ############" );
+                log.info("##################### JBD判断 成功 ############" );
                 String send_pro_code = jo.getString("senProvCode");
-                //log.info("##################### send_pro_code 成功 ############" + send_pro_code);
+                log.info("##################### send_pro_code 成功 ############" + send_pro_code);
                 String send_city_code = jo.getString("senCityCode");
-                //log.info("##################### send_city_code 成功 ############" + send_city_code);
+                log.info("##################### send_city_code 成功 ############" + send_city_code);
                 String send_dist_code = jo.getString("senCountyCode");
-                //log.info("##################### send_dist_code 成功 ############" + send_dist_code);
+                log.info("##################### send_dist_code 成功 ############" + send_dist_code);
 
                 String rec_pro_code = "999999";
                 String rec_city_code = "999999";
@@ -90,7 +90,7 @@ public class preprocessing extends UDF {
 
                 // 获取企业code
                 String pc_code= jsonUtil.getPcCode(pc_name);
-                //log.info("##################### getPcCode 成功 ############" + pc_code);
+                log.info("##################### getPcCode 成功 ############" + pc_code);
 
                 // 生成最终中间结果字符串
                 String ds = jsonUtil.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);

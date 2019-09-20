@@ -14,7 +14,7 @@ public class jsonUtils {
     private static List<String> lt = new ArrayList<String>(){{this.add("toProv");add("toCity");add("fromCity");add("fromProv");}};;
     private static List<String> cd = new ArrayList<String>(){{this.add("city");add("dist");}};
 
-    public static String cityAdd(String jsonStr1, String jsonStr2){
+    public String cityAdd(String jsonStr1, String jsonStr2){
         JSONObject jo1 = JSONObject.parseObject(jsonStr1);
         JSONObject jo2 = JSONObject.parseObject(jsonStr2);
 
@@ -53,7 +53,7 @@ public class jsonUtils {
         return jo1.toString();
     }
 
-    public static String distAdd(String jsonStr1, String jsonStr2){
+    public String distAdd(String jsonStr1, String jsonStr2){
         JSONObject jo1 = JSONObject.parseObject(jsonStr1);
         JSONObject jo2 = JSONObject.parseObject(jsonStr2);
 
@@ -91,7 +91,7 @@ public class jsonUtils {
         }
         return jo1.toString();
     }
-    public static String keyCityAdd(String jsonStr1, String jsonStr2){
+    public String keyCityAdd(String jsonStr1, String jsonStr2){
         JSONObject jo00 = JSONObject.parseObject(jsonStr1);
         JSONObject jo01 = JSONObject.parseObject(jsonStr2);
         JSONObject jo1 = JSONObject.parseObject(jo00.getString("keyCity"));
@@ -151,7 +151,7 @@ public class jsonUtils {
         //System.out.println("###### jo00 " + jo00);
         return jo00.toString();
     }
-    public static String pcAdd(String json1,String json2){
+    public String pcAdd(String json1,String json2){
         JSONObject jo1 = JSONObject.parseObject(json1);
         JSONObject jo2 = JSONObject.parseObject(json2);
 
@@ -294,7 +294,7 @@ public class jsonUtils {
         return jo1.toString();
     }
     // 电商企业
-    public static String dsAdd(String json1,String json2){
+    public  String dsAdd(String json1,String json2){
         JSONObject jo1 = JSONObject.parseObject(json1);
         JSONObject jo2 = JSONObject.parseObject(json2);
 
@@ -434,7 +434,7 @@ public class jsonUtils {
         return jo1.toString();
     }
     // 按省份 json串合并
-    public static String provAdd(String j1,String j2){
+    public  String provAdd(String j1,String j2){
         JSONObject jo1 = JSONObject.parseObject(j1);
         JSONObject jo2 = JSONObject.parseObject(j2);
 

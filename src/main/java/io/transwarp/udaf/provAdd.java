@@ -11,11 +11,13 @@ import org.apache.log4j.Logger;
  */
 public class provAdd extends UDAF {
 
-    public static class jsonStr{
+    jsonUtils ju = new jsonUtils();
+
+    public  class jsonStr{
         private String str;
     }
 
-    public static class provAddEvaluator implements UDAFEvaluator {
+    public  class provAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -41,7 +43,7 @@ public class provAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = o;
                 }else{
-                    json.str = jsonUtils.provAdd(json.str,o);
+                    json.str = ju.provAdd(json.str,o);
                 }
             }
             return true;
@@ -66,7 +68,7 @@ public class provAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = json1;
                 }else {
-                    json.str = jsonUtils.provAdd(json.str,json1);
+                    json.str = ju.provAdd(json.str,json1);
                 }
             }
             // TO-DO

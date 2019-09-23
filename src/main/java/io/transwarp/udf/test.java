@@ -15,23 +15,11 @@ import java.util.Date;
 public class test {
     public static void main(String[] args) {
 
-        String a = "{\n" +
-                "    \"ecCompanyId\": \"JBD\",\n" +
-                "    \"logisticProviderID\": \"JBD\",\n" +
-                "    \"mailNo\": \"JDVG00087119081\",\n" +
-                "    \"mailType\": \"1\",\n" +
-                "    \"pushTime\": \"2019-09-20 17:29:23\",\n" +
-                "    \"recCityCode\": \"00\",\n" +
-                "    \"recDatetime\": \"2019-09-20 17:29:23\",\n" +
-                "    \"senCityCode\": \"00\",\n" +
-                "    \"senProvCode\": \"65000000.0\",\n" +
-                "    \"sysDate\": \"2019-09-20 17:27:39\",\n" +
-                "    \"txLogisticID\": \"JBD\"\n" +
-                "}";
+        String a = "{\"ecCompanyId\":\"JBD\",\"txLogisticID\":\"JBD\",\"logisticProviderID\":\"JBD\",\"mailNo\":\"JDVE00291582550\",\"mailType\":\"1\",\"recAreaCode\":\"1\",\"senProvCode\":\"420000\",\"senCityCode\":\"420100\",\"senCountyCode\":\"420106\",\"recCityCode\":\"00\",\"recDatetime\":\"2019-08-31 14:22:15\",\"sysDate\":\"2019-08-31 14:22:33\"}";
         JSONObject jo = JSONObject.parseObject(a);
-        BigDecimal b = jo.getBigDecimal("senProvCode");
+        String ds_name = jo.getString("ecCompanyId");
+        System.out.println(ds_name);
 
-        System.out.println( b.stripTrailingZeros().toPlainString());
     }
 
 }

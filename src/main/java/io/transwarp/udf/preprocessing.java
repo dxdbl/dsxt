@@ -15,10 +15,10 @@ import java.io.IOException;
 public class preprocessing extends UDF {
     private  Logger log = Logger.getLogger(preprocessing.class);
     // hbase 表结构 rowley 存储单号，q1存储 flag ，q2存储 消息json串
-    private static   String[] columns = {"q1","q2"};
-    private static   String[] values = {"1", "jsonstr"};
-    private  Table table;
-    private  Get get;
+    public static   String[] columns = {"q1","q2"};
+    public static   String[] values = {"1", "jsonstr"};
+    private    Table table;
+    private    Get get;
     private jsonUtil jsonUtil = new jsonUtil();
 
     public static Configuration conf = null;
@@ -41,6 +41,8 @@ public class preprocessing extends UDF {
     }
 
     public String evaluate(String jsonStr) {
+        log.info("##################### evaluate 函数入口 ############");
+        //log.info("###########################" + jsonStr);
         JSONObject jo = JSONObject.parseObject(jsonStr);
         log.info("##################### json对象化成功 ############");
 
@@ -175,7 +177,7 @@ public class preprocessing extends UDF {
         }
         return dt + "##0#0######true#1#1#sp";
     }
-    private String getOneRecordByCol(String tableName, String rowKey,String familyName, String columnName) throws IOException {
+    public String getOneRecordByCol(String tableName, String rowKey,String familyName, String columnName) throws IOException {
         if (table == null){
             table = new HTable(conf, Bytes.toBytes(tableName));
         }
@@ -192,7 +194,7 @@ public class preprocessing extends UDF {
         return "error";
     }
     // 一次 put 多个列
-    private void addData(String tableName, String rowKey, String[] column, String[] value) throws IOException {
+    public void addData(String tableName, String rowKey, String[] column, String[] value) throws IOException {
         if (table == null){
             table = new HTable(conf, Bytes.toBytes(tableName));
         }

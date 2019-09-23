@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class dsAdd extends UDAF {
 
-    public class jsonStr{
+    public static class jsonStr{
         private String str;
     }
 

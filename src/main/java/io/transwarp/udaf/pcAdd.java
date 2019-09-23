@@ -1,8 +1,12 @@
 package io.transwarp.udaf;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.hive.ql.exec.UDAF;
 import org.apache.hadoop.hive.ql.exec.UDAFEvaluator;
 import org.apache.log4j.Logger;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @description:
@@ -10,7 +14,6 @@ import org.apache.log4j.Logger;
  * @time: 2019/8/24 14:55
  */
 public class pcAdd extends UDAF {
-    jsonUtils ju = new jsonUtils();
 
     public class jsonStr{
         private String str;
@@ -42,7 +45,7 @@ public class pcAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = o;
                 }else{
-                    json.str = ju.pcAdd(json.str,o);
+                    json.str = pcAdd(json.str,o);
                 }
             }
             return true;
@@ -67,7 +70,7 @@ public class pcAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = json1;
                 }else {
-                    json.str = ju.pcAdd(json.str,json1);
+                    json.str = pcAdd(json.str,json1);
                 }
             }
             // TO-DO
@@ -81,4 +84,148 @@ public class pcAdd extends UDAF {
         }
     }
 
+
+
+    public String pcAdd(String json1,String json2){
+        JSONObject jo1 = JSONObject.parseObject(json1);
+        JSONObject jo2 = JSONObject.parseObject(json2);
+
+        Set<String> set1 = jo1.getJSONObject("pc").keySet();
+        Set<String> set2 = jo2.getJSONObject("pc").keySet();
+        Set<String> set3 = new HashSet<String>();//pc相同的集合
+        Set<String> set4 = new HashSet<String>();//pc相同的集合
+        for(String s:set2){
+            for(String s2:set1){
+                if(s.equals(s2)){
+                    set3.add(s);
+                }
+            }
+        }
+        set4.addAll(set2);
+        set4.removeAll(set3);
+
+        if(set4.size()!=0){ //有不同的pc值
+            for(String s:set4){//把没有的pc值put进去
+                jo1.getJSONObject("pc").put(s,jo2.getJSONObject("pc").getJSONObject(s));
+
+            }
+        }
+
+        if(set3.size()!=0){
+            for(String s:set3){
+                jo1.getJSONObject("pc").getJSONObject(s).put("all",
+                        jo1.getJSONObject("pc").getJSONObject(s).getInteger("all")+
+                                jo2.getJSONObject("pc").getJSONObject(s).getInteger("all"));
+                jo1.getJSONObject("pc").getJSONObject(s).put("allPrice",
+                        jo1.getJSONObject("pc").getJSONObject(s).getInteger("allPrice")+
+                                jo2.getJSONObject("pc").getJSONObject(s).getInteger("allPrice"));
+
+                Set<String> set5 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").keySet();//第一个串中的prov值
+                Set<String> set6 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").keySet();//第二个串中的prov值
+                Set<String> set7 = new HashSet<String>();//两个串相同得到prov
+                Set<String> set8 = new HashSet<String>();//第一个串中没有的prov
+                for(String i:set5){
+                    for(String j:set6){
+                        if(i.equals(j)){
+                            set7.add(i);
+                        }
+                    }
+                }
+                set8.addAll(set6);
+                set8.removeAll(set7);
+
+                if(set8.size()!=0){//有不相同的prov值
+                    for(String i:set8){
+                        jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").put(i,
+                                jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(i));
+                    }
+                }
+                if(set7.size()!=0){//有相同的prov值
+                    for(String p:set7){
+                        jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).put("rec",
+                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getInteger("rec")+
+                                        jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getInteger("rec"));
+                        jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).put("sed",
+                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getInteger("sed")+
+                                        jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getInteger("sed"));
+                        jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).put("sedPrice",
+                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getInteger("sedPrice")+
+                                        jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getInteger("sedPrice"));
+
+                        Set<String> set9 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
+                        Set<String>  set10 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").keySet();
+                        Set<String>  set11 = new HashSet<String>();//两个串相同的city
+                        Set<String> set12 = new HashSet<String>();//第一个串中没有的city
+                        for(String i:set9){
+                            for(String j:set10){
+                                if(i.equals(j)){
+                                    set11.add(i);
+                                }
+                            }
+                        }
+                        if(set12.size()!=0){
+                            for(String i:set12){
+                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").put(i,
+                                        jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(i)
+                                );
+                            }
+                        }
+
+                        if(set11.size()!=0){
+                            for(String c:set11){
+                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).put(
+                                        "rec",jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("rec")
+                                                +jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("rec")
+                                );
+                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).put(
+                                        "sed",jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("sed")
+                                                +jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("sed")
+                                );
+                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).put(
+                                        "sedPrice",jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("sedPrice")
+                                                +jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getInteger("sedPrice")
+                                );
+
+                                Set<String> set13 = jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第一个串中的dist值
+                                Set<String> set14 = jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").keySet();//第二个串中的dist值
+                                Set<String> set15 = new HashSet<String>();//两个串相同的dist
+                                Set<String> set16 = new HashSet<String>();//第一个串中没有的dist
+                                for(String i:set13){
+                                    for(String j:set14){
+                                        if(i.equals(j)){
+                                            set15.add(i);
+                                        }
+                                    }
+                                }
+                                set16.addAll(set14);
+                                set16.removeAll(set15);
+
+                                if(set16.size()!=0){
+                                    for(String i:set16){
+                                        jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").put(i,
+                                                jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(i));
+                                    }
+                                }
+
+                                if(set15.size()!=0){
+                                    for(String d:set15){
+                                        jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).put("rec",
+                                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).getInteger("rec")+
+                                                        jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).getInteger("rec") );
+                                        jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).put("sed",
+                                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).getInteger("sed")+
+                                                        jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).getInteger("sed") );
+                                        jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).put("sedPrice",
+                                                jo1.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).getInteger("sedPrice")+
+                                                        jo2.getJSONObject("pc").getJSONObject(s).getJSONObject("prov").getJSONObject(p).getJSONObject("city").getJSONObject(c).getJSONObject("dist").getJSONObject(d).getInteger("sedPrice") );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return jo1.toString();
+    }
 }

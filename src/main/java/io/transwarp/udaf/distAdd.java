@@ -1,8 +1,11 @@
 package io.transwarp.udaf;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.hive.ql.exec.UDAF;
 import org.apache.hadoop.hive.ql.exec.UDAFEvaluator;
-import org.apache.log4j.Logger;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @description:
@@ -10,8 +13,6 @@ import org.apache.log4j.Logger;
  * @time: 2019/8/24 14:55
  */
 public class distAdd extends UDAF {
-
-    jsonUtils ju = new jsonUtils();
 
     public  class jsonStr{
         private String str;
@@ -43,7 +44,7 @@ public class distAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = o;
                 }else{
-                    json.str = ju.distAdd(json.str,o);
+                    json.str = distAdd(json.str,o);
                 }
             }
             return true;
@@ -68,7 +69,7 @@ public class distAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = json1;
                 }else {
-                    json.str = ju.distAdd(json.str,json1);
+                    json.str = distAdd(json.str,json1);
                 }
             }
             // TO-DO
@@ -80,6 +81,45 @@ public class distAdd extends UDAF {
         public String terminate() {
             return (json.str.equals("") ? "" : json.str);
         }
+    }
+
+    public String distAdd(String jsonStr1, String jsonStr2){
+        JSONObject jo1 = JSONObject.parseObject(jsonStr1);
+        JSONObject jo2 = JSONObject.parseObject(jsonStr2);
+
+        JSONObject rec = jo1.getJSONObject("dist");
+        JSONObject rec2 = jo2.getJSONObject("dist");
+        Set<String> set1 = rec.keySet();//第一个串的city集合
+        Set<String> set2 = rec2.keySet();//第二个串的city集合
+
+        Set<String> set3 = new HashSet<String>();
+        for (String s : set2) {
+            for (String s2 : set1) {
+                if (s.equals(s2)) {
+                    set3.add(s);
+
+                }
+            }
+        }
+        Set<String> set4 = new HashSet<String>();
+        set4.addAll(set2);
+        set4.removeAll(set3);
+
+        if (set4.size() != 0) {
+            for (String s : set4) {
+                rec.put(s, rec2.getJSONObject(s));
+
+            }
+        }
+        if (set3.size() != 0) {
+            for (String s : set3) {
+                JSONObject jo = rec.getJSONObject(s);
+                jo.put("rec", rec.getJSONObject(s).getInteger("rec") + rec2.getJSONObject(s).getInteger("rec"));
+                jo.put("sed", rec.getJSONObject(s).getInteger("sed") + rec2.getJSONObject(s).getInteger("sed"));
+                jo.put("sedPrice", rec.getJSONObject(s).getInteger("sedPrice") + rec2.getJSONObject(s).getInteger("sedPrice"));
+            }
+        }
+        return jo1.toString();
     }
 
 }

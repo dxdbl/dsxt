@@ -1,8 +1,11 @@
 package io.transwarp.udaf;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.hive.ql.exec.UDAF;
 import org.apache.hadoop.hive.ql.exec.UDAFEvaluator;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -10,7 +13,9 @@ import org.apache.log4j.Logger;
  * @time: 2019/8/24 14:55
  */
 public class keyCityAdd extends UDAF {
-    jsonUtils ju = new jsonUtils();
+
+    private static List<String> lt = new ArrayList<String>(){{this.add("toProv");add("toCity");add("fromCity");add("fromProv");}};;
+
 
     public  class jsonStr{
         private String str;
@@ -42,7 +47,7 @@ public class keyCityAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = o;
                 }else{
-                    json.str = ju.keyCityAdd(json.str,o);
+                    json.str = keyCityAdd(json.str,o);
                 }
             }
             return true;
@@ -67,7 +72,7 @@ public class keyCityAdd extends UDAF {
                 if (json.str.equals("")){
                     json.str = json1;
                 }else {
-                    json.str = ju.keyCityAdd(json.str,json1);
+                    json.str = keyCityAdd(json.str,json1);
                 }
             }
             // TO-DO
@@ -81,4 +86,64 @@ public class keyCityAdd extends UDAF {
         }
     }
 
+    public String keyCityAdd(String jsonStr1, String jsonStr2){
+        JSONObject jo00 = JSONObject.parseObject(jsonStr1);
+        JSONObject jo01 = JSONObject.parseObject(jsonStr2);
+        JSONObject jo1 = JSONObject.parseObject(jo00.getString("keyCity"));
+        JSONObject jo12 = JSONObject.parseObject(jo00.getString("keyCity"));
+        JSONObject jo2 = JSONObject.parseObject(jo01.getString("keyCity"));
+
+        for (Map.Entry<String, Object> entry1 : jo12.entrySet()) {
+            for (Map.Entry<String, Object> entry2 : jo2.entrySet()){
+                if (jo1.containsKey(entry2.getKey())){
+                    if (entry1.getKey().equals(entry2.getKey())){
+                        //System.out.println("101100 相等 ");
+                        // to-do
+                        JSONObject jo3 = JSONObject.parseObject(entry1.getValue().toString());
+                        JSONObject jo4 = JSONObject.parseObject(entry2.getValue().toString());
+                        //System.out.println("jo3 --- " + jo3);
+                        //System.out.println("jo4 --- " + jo4);
+                        for (int i = 0; i < lt.size(); i++) {
+                            JSONObject jo5 = JSONObject.parseObject(jo3.getString(lt.get(i)));
+                            JSONObject jo52 = JSONObject.parseObject(jo3.getString(lt.get(i)));
+                            JSONObject jo6 = JSONObject.parseObject(jo4.getString(lt.get(i)));
+                            //System.out.println("jo5 --- " + jo5);
+                            //System.out.println("jo6 --- " + jo6);
+                            for (Map.Entry<String, Object> entry3 : jo52.entrySet()){
+                                for (Map.Entry<String, Object> entry4 : jo6.entrySet()){
+                                    //System.out.println(entry3.getKey());
+                                    //System.out.println(entry3.getValue());
+                                    if (jo5.containsKey(entry4.getKey())){
+                                        if (entry3.getKey().equals(entry4.getKey())){
+                                            int sum = Integer.parseInt(entry3.getValue().toString()) + Integer.parseInt(entry4.getValue().toString());
+                                            //System.out.println(sum);
+                                            jo5.put(entry3.getKey(),sum);
+                                            jo3.put(lt.get(i),jo5);
+                                            //jo6.remove(entry3.getKey());
+                                            //System.out.println("加和后的jo5 --- " + jo5);
+                                        }
+                                    }else {
+                                        jo5.put(entry4.getKey(),entry4.getValue());
+                                        jo3.put(lt.get(i),jo5);
+                                    }
+                                }
+                            }
+                            //jo4.remove(lt.get(i),jo6);
+                            //System.out.println("####### jo3  " + jo3);
+                        }
+                        jo1.put(entry1.getKey(),jo3);
+                        //jo2.remove(entry2.getKey(),jo4);
+                        //System.out.println("###### jo3 " + jo3);
+                    }
+
+                }
+                else {
+                    jo1.put(entry2.getKey(),entry2.getValue());
+                }
+            }
+        }
+        jo00.put("keyCity",jo1);
+        //System.out.println("###### jo00 " + jo00);
+        return jo00.toString();
+    }
 }

@@ -3,7 +3,7 @@ package io.transwarp.udf;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.hive.ql.exec.UDF;
 import redis.clients.jedis.Jedis;
-import io.transwarp.udaf.jsonUtils;
+
 import java.math.BigDecimal;
 
 public class updateRedis extends UDF {

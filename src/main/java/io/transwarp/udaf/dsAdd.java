@@ -84,7 +84,7 @@ public class dsAdd extends UDAF {
     }
 
     // 电商企业
-    private  String dsAdd(String json1,String json2){
+    public  String dsAdd(String json1,String json2){
         JSONObject jo1 = JSONObject.parseObject(json1);
         JSONObject jo2 = JSONObject.parseObject(json2);
 

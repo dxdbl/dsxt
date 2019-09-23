@@ -25,7 +25,8 @@ CREATE STREAM order_input (
 ROW FORMAT DELIMITED  
 FIELDS TERMINATED BY '\001'   
 LINES TERMINATED BY '\n'  
-TBLPROPERTIES("topic"="dsxt_online","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181",     "kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
+TBLPROPERTIES("topic"="dsxt_online","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181",    
+"kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
 
 -- 创建 preprocessing 处理后的中间数据 topic  
 drop stream after_preprocessing;  
@@ -35,7 +36,8 @@ create stream after_preprocessing (
 ROW FORMAT DELIMITED  
 FIELDS TERMINATED BY '\001'   
 LINES TERMINATED BY  '\n'  
-TBLPROPERTIES("topic"="after_preprocessing","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181",     "kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
+TBLPROPERTIES("topic"="after_preprocessing","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181",  
+"kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
 
 -- 创建 preprocessing  streamjob  
 drop streamjob preprocessing;  
@@ -76,7 +78,8 @@ CREATE STREAM aggregate_input (
 ) ROW FORMAT DELIMITED  
 FIELDS TERMINATED BY '#'   
 LINES TERMINATED BY  '\n'  
-TBLPROPERTIES("topic"="after_preprocessing","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181",     "kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
+TBLPROPERTIES("topic"="after_preprocessing","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181",  
+"kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
 
 -- 创建 window 窗口  
 DROP STREAM aggregate_window;  
@@ -102,7 +105,8 @@ CREATE STREAM after_aggregate (
     ,sp string  -- 默认 'sp'  
     )  
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '#' LINES TERMINATED BY  '\n'  
-TBLPROPERTIES("topic"="dsxt_aggregate","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181",  "kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
+TBLPROPERTIES("topic"="dsxt_aggregate","kafka.zookeeper"="tdh4:2181,tdh8:2181,tdh13:2181",  
+"kafka.broker.list"="tdh4:9092,tdh8:9092,tdh13:9092");  
 
 -- 创建 streamjob 将聚合结果写入 aggregate  
 drop streamjob data_aggregate;  

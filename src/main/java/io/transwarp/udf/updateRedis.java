@@ -1,6 +1,7 @@
 package io.transwarp.udf;
 
 import com.alibaba.fastjson.JSONObject;
+import io.transwarp.udaf.jsonUtils;
 import org.apache.hadoop.hive.ql.exec.UDF;
 import redis.clients.jedis.Jedis;
 

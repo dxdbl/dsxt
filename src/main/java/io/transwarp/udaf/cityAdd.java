@@ -14,11 +14,11 @@ import java.util.Set;
  */
 public class cityAdd extends UDAF {
 
-    public class jsonStr{
+    public static class jsonStr{
         private String str;
     }
 
-    public class cityAddEvaluator implements UDAFEvaluator {
+    public static class cityAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -82,7 +82,7 @@ public class cityAdd extends UDAF {
             return (json.str.equals("") ? "" : json.str);
         }
     }
-    public String cityAdd(String jsonStr1, String jsonStr2){
+    public static String cityAdd(String jsonStr1, String jsonStr2){
         JSONObject jo1 = JSONObject.parseObject(jsonStr1);
         JSONObject jo2 = JSONObject.parseObject(jsonStr2);
 

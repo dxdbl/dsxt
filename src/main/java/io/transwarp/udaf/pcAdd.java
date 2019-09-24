@@ -15,11 +15,11 @@ import java.util.Set;
  */
 public class pcAdd extends UDAF {
 
-    public class jsonStr{
+    public static class jsonStr{
         private String str;
     }
 
-    public class pcAddEvaluator implements UDAFEvaluator {
+    public static class pcAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -86,7 +86,7 @@ public class pcAdd extends UDAF {
 
 
 
-    public String pcAdd(String json1,String json2){
+    public static String pcAdd(String json1,String json2){
         JSONObject jo1 = JSONObject.parseObject(json1);
         JSONObject jo2 = JSONObject.parseObject(json2);
 

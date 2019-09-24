@@ -14,11 +14,11 @@ import java.util.Set;
  */
 public class distAdd extends UDAF {
 
-    public  class jsonStr{
+    public  static class jsonStr{
         private String str;
     }
 
-    public  class distAddEvaluator implements UDAFEvaluator {
+    public static class distAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -83,7 +83,7 @@ public class distAdd extends UDAF {
         }
     }
 
-    public String distAdd(String jsonStr1, String jsonStr2){
+    public static String distAdd(String jsonStr1, String jsonStr2){
         JSONObject jo1 = JSONObject.parseObject(jsonStr1);
         JSONObject jo2 = JSONObject.parseObject(jsonStr2);
 

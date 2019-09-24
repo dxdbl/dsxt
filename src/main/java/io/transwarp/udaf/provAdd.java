@@ -18,11 +18,11 @@ public class provAdd extends UDAF {
 
     private static List<String> cd = new ArrayList<String>(){{this.add("city");add("dist");}};
 
-    public  class jsonStr{
+    public  static class jsonStr{
         private String str;
     }
 
-    public  class provAddEvaluator implements UDAFEvaluator {
+    public  static class provAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -88,7 +88,7 @@ public class provAdd extends UDAF {
     }
 
     // 按省份 json串合并
-    public  String provAdd(String j1,String j2){
+    public static String provAdd(String j1,String j2){
         JSONObject jo1 = JSONObject.parseObject(j1);
         JSONObject jo2 = JSONObject.parseObject(j2);
 

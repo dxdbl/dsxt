@@ -17,11 +17,11 @@ public class keyCityAdd extends UDAF {
     private static List<String> lt = new ArrayList<String>(){{this.add("toProv");add("toCity");add("fromCity");add("fromProv");}};;
 
 
-    public  class jsonStr{
+    public  static class jsonStr{
         private String str;
     }
 
-    public  class keyCityAddEvaluator implements UDAFEvaluator {
+    public  static class keyCityAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -86,7 +86,7 @@ public class keyCityAdd extends UDAF {
         }
     }
 
-    public String keyCityAdd(String jsonStr1, String jsonStr2){
+    public static String keyCityAdd(String jsonStr1, String jsonStr2){
         JSONObject jo00 = JSONObject.parseObject(jsonStr1);
         JSONObject jo01 = JSONObject.parseObject(jsonStr2);
         JSONObject jo1 = JSONObject.parseObject(jo00.getString("keyCity"));

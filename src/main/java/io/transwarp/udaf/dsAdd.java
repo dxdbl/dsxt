@@ -18,7 +18,7 @@ public class dsAdd extends UDAF {
         private String str;
     }
 
-    public class dsAddEvaluator implements UDAFEvaluator {
+    public static class dsAddEvaluator implements UDAFEvaluator {
 
         jsonStr json;
 
@@ -84,7 +84,7 @@ public class dsAdd extends UDAF {
     }
 
     // 电商企业
-    public  String dsAdd(String json1,String json2){
+    public static String dsAdd(String json1,String json2){
         JSONObject jo1 = JSONObject.parseObject(json1);
         JSONObject jo2 = JSONObject.parseObject(json2);
 

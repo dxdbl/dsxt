@@ -164,7 +164,7 @@ public class preprocessing extends UDF {
                 String  ds = jsonUtil.ds(ds_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
                 String city = jsonUtil.byCity(send_city_code,rec_city_code);
                 String  dist = jsonUtil.Dist(send_dist_code,rec_dist_code);
-                String  key_city = jsonUtil.keyCityDataMsg(pc_code,send_city_code,send_pro_code,rec_city_code,rec_pro_code);
+                String  key_city = jsonUtil.keyCityDataMsg(pc_code,send_pro_code,send_city_code,rec_pro_code,rec_city_code);
                 String  pc = jsonUtil.pcDataMsg(pc_code,send_pro_code,send_city_code,send_dist_code,rec_pro_code,rec_city_code,rec_dist_code);
                 String prov = jsonUtil.Prov(send_pro_code,rec_pro_code,rec_city_code,rec_dist_code);
 
